@@ -3,9 +3,32 @@
     <!-- <header></header> -->
     <div class="content">
       <div class="section1">
-        <img :src="userinfo.WechatPic" alt="">
-        <span>用户：{{userinfo.WechatName}}</span>
-        <span style="margin-top:0;">{{userinfo.UserType | judgeLevel}}</span>
+        <div class="userinfo">
+          <div class="port-top">
+            <img :src="userinfo.WechatPic" class="head" alt="">
+            <div class="info-text">
+              <p class="name">用户：{{userinfo.WechatName}}</p>
+              <p class="tag">
+                <!-- <i class="iconfont icon-shenfenzheng"></i> -->
+                <img src="~static/creditCard.png" class="icon" alt="">
+                <img src="~static/identifity.png" class="icon" alt="">
+                <!-- <i class="iconfont icon-contacts"></i> -->
+                <span>更多认证</span>
+                <van-icon name="arrow" />
+              </p>
+            </div>
+          </div>
+          <div class="port-bottom">
+            <div class="asset">
+              <p>总资产(元)</p>
+              <p class="count">2000</p>
+            </div>
+            <span style="display:flex;align-items:center"><i class="iconfont icon-yinxingqia"></i><van-icon name="arrow" /></span>
+          </div>
+        </div>
+
+        <!-- <img :src="userinfo.WechatPic" alt=""> -->
+        <!-- <span style="margin-top:0;">{{userinfo.UserType | judgeLevel}}</span> -->
       </div>
       <div class="section2">
         <van-cell-group>
@@ -80,87 +103,47 @@
 </template>
 
 <script>
-import {getUserInfo} from "~/api/getData.js";
+import { getUserInfo } from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
 
 export default {
-  async fetch(){
-
-  },
-  async asyncData({query,store}){
-    let ayData ={};
+  async fetch() {},
+  async asyncData({ query, store }) {
+    let ayData = {};
     // console.log(store.state)
     await getUserInfo({
-      Data:{
+      Data: {
         UserID: query.UserID
       }
-    })
-      .then(res=>{
-        // console.log(res.data)
-        if (res.data.StatusCode == 200) {
-          ayData.userinfo = res.data.Data
-          
-        }else if(res.data.StatusCode == 400){
-          console.log('用户还未注册');
-          console.log('getUserInfo',res.data.data)
-        }
-        return res
-      })
+    }).then(res => {
+      // console.log(res.data)
+      if (res.data.StatusCode == 200) {
+        ayData.userinfo = res.data.Data;
+      } else if (res.data.StatusCode == 400) {
+        console.log("用户还未注册");
+        console.log("getUserInfo", res.data.data);
+      }
+      return res;
+    });
     return ayData;
   },
-  methods: {
-  },
+  methods: {},
   data() {
     return {
-      active:2
+      active: 2
     };
   },
-  head:{
-    title:'个人中心'
+  head: {
+    title: "个人中心"
   },
-  components: {
-  },
+  components: {},
   mounted() {
-    storage.set('UserID',this.$route.query.UserID);
-    storage.set('userInfo',this.userinfo);
-    
+    storage.set("UserID", this.$route.query.UserID);
+    storage.set("userInfo", this.userinfo);
   }
 };
 </script>
 
-<style lang='stylus' scoped>
-.van-cell-group
-  margin-top 9px
-.van-cell__left-icon
-  font-size 20px
-.content
-  background #f2f2f2
-  padding-bottom 60px
-  min-height 'calc(100vh - %s)' % 40px
-.section1
-  width 100%;
-  height 150px
-  background url('~/static/center-bg.png') no-repeat top center/cover;
-  display flex
-  flex-direction column
-  align-items center
-  justify-content center
-  // margin-bottom 20px
-  img 
-    width 60px
-    height 60px
-    border-radius 50%
-    background #fff
-  span 
-    font-size 16px
-    margin-top 10px
-    color #fff
-.section2
-  // height 'calc(100vh - %s)' % 200px
-  // overflow auto
-
-
-
-</style>
+<style lang='stylus' scoped src="~/assets/styl/myself.styl"></style>

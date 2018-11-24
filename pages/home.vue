@@ -29,7 +29,7 @@
         </li>
       </ul>
       <div class="cont">
-        <div class="news-block">
+        <!-- <div class="news-block">
           <h2>新闻公告</h2>
           <div class="news-cont">
             <div class="port-left">
@@ -42,6 +42,10 @@
               <li><span>xxxxxx</span><span class="date">10-06</span></li>
             </ul>
           </div>
+        </div> -->
+        <div class="guapai-block">
+          
+          
         </div>
         <div class="desc-block">
           <h2>公司简介</h2>
