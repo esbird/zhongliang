@@ -1,95 +1,96 @@
-body
-    background: #fff
 .content
-    position relative
-    display block
-.img_wrap
+    background: #fff
+    padding-bottom: 50px;
+.img-wrap
     width: 100%
-    height 750px
-    .swiper-silde
-        height 750px
-        background-size: contain
-        background-repeat: no-repeat
-        background-position: top center
-.btn-wrap
-    position absolute
-    bottom: -30px
-    left: 50%
-    transform: translate3d(-50%,0,0)
-    display flex
-    width: 620px
-    justify-content: space-between
-    z-index: 2
-
-    li
-        box-shadow: 5px 5px 5px #D7D7D7;
-        background #fff
-        border-radius: 50%
-
-        width: 128px
-        height 128px
-        display flex
-        justify-content: space-around
-        align-items: center
-        img
-            width: 70px
-            height 70px
-.text-wrap
-    .baseInfo
-        height 190px
-        font-size: 28px
-        padding:46px 30px 50px
-        box-sizing: border-box
-        .iconfont
-            font-size: 40px
-        .brief
-            span ~span
-                margin-left: 30px
-        .nickname
-            float left
-            font-weight: bold
-        .sex
-            float left
-            color: #E89ABE
-            margin-left: 90px;
-        .addr
-            float right
-            color: #6B6B6B
-            .icon-zuobiao
-                color: #BC8176
-.line
-    width: 100%
-    height 15px
+    height 200px
+    text-align center
+    background-color: #D7D7D7
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain
+    overflow hidden
+.pic
+    height 200px
+    width auto
+    margin 0 auto
+.sort-bar
+  width: 100%
+  height 40px
+  font-size: 14px
+  line-height: 40px
+  border-bottom: 1.2px solid #f2f2f2
+  span  
+    margin-left: 28px
+.goods-wrap
+  height 'calc(100vh - %s)' % 94px
+  width: 100%
+  display flex
+  .port-left
+    height 100%;
+    width: 90px
     background #F2F2F2
-.tag-wrap
-    box-sizing: border-box
-    padding:28px
-    .title
-        font-size: 28px
-        font-weight: 500
-        margin-bottom: 28px
-.baseInfo-tag
-    display flex
-    flex-wrap: wrap
-    font-size: 26px
-    color: #BC8176
-    .tag-item
-        width: 140px
-        height 50px
-        border-radius: 12px
-        line-height: 1.5
-        border: 2px solid #BC8176
+    overflow auto
+    padding 5px 0
+    border 1.2px solid #E3E3E4
+    ul
+      li
+        line-height: 35px
+        font-size: 15px
         text-align: center
-        margin:20px 14px 0
-.neixindubai
-    box-sizing: border-box
-    padding: 28px
-    font-size: 28px
-    font-weight: 500
-    p
-        margin-top: 30px
-        word-wrap: break-word;
-
-
-            
+        ul
+          li.active-item
+            position relative
+            &:before
+              content: ""
+              width: 2.5px
+              height 16px
+              position absolute
+              left 0
+              top: 50%
+              transform: translate3d(-50%,-50%,0)
+              background #003366
+            &:active
+              opacity .6
+        &.active
+          position relative
+          background #fff
+  .port-right
+    flex:1
+    height 100%
+    overflow auto
+    padding 5px
+    ul
+      li
+        width: 100%
+        height 100px
+        border-radius: 7.5px
+        background #f2f2f2
+        display: flex
+        align-items: center
+        padding 7.5px
+        &~li
+          margin-top: 2px
+        img 
+          width: 85px
+          height 85px
+          background fff
+          // margin-left: 7.5px
+        .text
+          display flex
+          flex-direction: column
+          margin-left: 9px
+          height 100%
+          h2
+            font-size: 16px
+          .weight
+            font-size: 12px
+            margin-top: 28px
+            color: #949494
+          .price
+            font-size: 10px
+            color: #003366
+            margin-top: 3px
+            span 
+              font-size: 18px
 
