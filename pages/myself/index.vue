@@ -31,7 +31,58 @@
         <!-- <span style="margin-top:0;">{{userinfo.UserType | judgeLevel}}</span> -->
       </div>
       <div class="section2">
-        <van-cell-group>
+        <!-- 贷款用户 -->
+        <van-cell-group  v-if="userinfo.UserType>=2">
+          <van-cell title="贷款" is-link :to="{path:'/myself/wodedaikuan',query:{UserID:userinfo.UserID}}">
+            <template slot="icon">
+              <i class="iconfont icon-daikuan van-cell__left-icon" style="color:#87A7D6"></i>
+            </template>
+          </van-cell>
+          <van-cell title="还款" is-link :to="{path:'/myself/wodehuankuan/huankuanjilu',query:{UserID:userinfo.UserID}}">
+            <template slot="icon">
+              <i class="iconfont icon-huankuankuai van-cell__left-icon" style="color:#E16531"></i>
+            </template>
+          </van-cell>
+        </van-cell-group>
+        <!-- 出借用户 -->
+        <van-cell-group  v-if="userinfo.UserType>=2">
+          <van-cell title="放款" is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}">
+            <template slot="icon">
+              <i class="iconfont icon-fukuanjine van-cell__left-icon" style="color:#3F81C1"></i>
+            </template>
+          </van-cell>
+          <van-cell title="收款" is-link :to="{path:'/myself/wodehuankuan/huankuanjilu',query:{UserID:userinfo.UserID}}">
+            <template slot="icon">
+              <i class="iconfont icon-huankuankuai van-cell__left-icon" style="color:#E16531"></i>
+            </template>
+          </van-cell>
+        </van-cell-group>
+        <!-- 仓储用户 -->
+        <van-cell-group  v-if="userinfo.UserType>=2">
+          <van-cell title="库管信息" is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory">
+          </van-cell>
+          <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory-wrap">
+            <template slot="title">
+              <p style="font-weight:500">场地编号</p>
+              <p class="time">开始时间:</p>
+              <p class="time">结束时间:</p>
+            </template>
+            <span style="color:#003366">剩余360天</span>
+          </van-cell>
+        </van-cell-group>
+        <ul class="base-fun-wrap">
+          <li>
+            <i class="iconfont icon-guapai-copy" style="color:#17ABE3"></i>
+            <span>挂牌</span>
+          </li>
+          <li>
+            <i class="iconfont icon-kefu" style="color:#1AABA8"></i>
+            <span>联系客服</span>
+          </li>
+          <li></li>
+        </ul>
+
+        <!-- <van-cell-group>
           <van-cell title="我要挂牌" is-link :to="{path:'/myself/woyaoguapai',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-shangjiazuhe van-cell__left-icon" style="color:#003366"></i>
@@ -47,8 +98,8 @@
               <i class="iconfont icon-fukuanjine van-cell__left-icon" style="color:#3F81C1"></i>
             </template>
           </van-cell>
-        </van-cell-group>
-        <van-cell-group v-if="userinfo.UserType >= 1">
+        </van-cell-group> -->
+        <!-- <van-cell-group v-if="userinfo.UserType >= 1">
           <van-cell title="场地租赁" is-link :to="{path:'/myself/changdizupin',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-changdizulin van-cell__left-icon" style="color:#EEB173"></i>
@@ -69,26 +120,14 @@
               <i class="iconfont icon-round_depot_fill van-cell__left-icon" style="color:#E98F36"></i>
             </template>
           </van-cell>
-        </van-cell-group>
-        <van-cell-group  v-if="userinfo.UserType>=2">
-          <van-cell title="我要贷款" is-link :to="{path:'/myself/wodedaikuan',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-daikuan van-cell__left-icon" style="color:#87A7D6"></i>
-            </template>
-          </van-cell>
-          <van-cell title="我要还款" is-link :to="{path:'/myself/wodehuankuan/huankuanjilu',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-huankuankuai van-cell__left-icon" style="color:#E16531"></i>
-            </template>
-          </van-cell>
-        </van-cell-group>
-        <van-cell-group v-if="userinfo.UserType!=2">
+        </van-cell-group> -->
+        <!-- <van-cell-group v-if="userinfo.UserType!=2">
           <van-cell title="会员等级申请" is-link :to="{path:'/myself/huiyuanshenji',query:{UserID:userinfo.UserID,level:userinfo.UserType}}">
             <template slot="icon">
               <i class="iconfont icon-huiyuan van-cell__left-icon" style="color:#E98F36"></i>
             </template>
           </van-cell>
-        </van-cell-group>
+        </van-cell-group> -->
       </div>
     </div>
     <van-tabbar v-model="active">

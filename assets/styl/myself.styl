@@ -64,8 +64,44 @@
           font-family: 'Arial'
           color: #000
           font-weight: bold
-
-      
 .section2
-  // height 'calc(100vh - %s)' % 200px
-  // overflow auto
+  .factory
+    position relative
+    &:before
+      content ""
+      width: 5px
+      height 25px
+      background: #003366
+      position absolute
+      left: 0
+      top: 50%
+      transform: translate3d(0,-50%,0)
+  .factory-wrap
+    display flex
+    align-items: center
+    p
+      line-height: 1.5
+      &.time
+        font-size: 10px
+        color: #6B6B6B
+  .base-fun-wrap
+    display flex
+    background #f2f2f2
+    width: 100%
+    justify-content: space-between
+    margin-top: 10px
+    li
+      width: 124px
+      height 85px
+      background #fff
+      display flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      .iconfont
+        font-size: 30px
+      span 
+        margin-top: 8px
+        color: #868686
+      
+    
