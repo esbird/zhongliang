@@ -27,7 +27,7 @@ import {
   TabbarItem,
   Field,
   Cell,
-  CellGroup
+  CellGroup,
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
@@ -72,4 +72,10 @@ Vue.prototype.$loading = () => {
     loadingType: 'spinner',
     message: '加载中'
   });
+}
+Vue.prototype.$alert = (message,title="提醒")=>{
+  return Dialog.alert({
+    title,
+    message
+  })
 }

@@ -194,7 +194,7 @@ P = 37.5
       font-weight: bold
       text-align: center
     p
-      font-size: (9/37.5)rem
+      font-size: 12px
       color: #003366
       margin-top: (17/37.5)rem
     input[type=text],input[type=number]

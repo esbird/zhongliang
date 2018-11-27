@@ -183,3 +183,9 @@ export const postUserLevel = (data,headers={}) => fetch('/api/Post/UserLevel',da
 
 export const getUserLevel = (data,headers={}) => fetch('/api/Get/UserLevel',data, "POST",headers);
 
+/**
+ * 上传身份证信息
+ */
+
+export const postUserIdCard = (data,headers={}) => fetch('/api/Post/UserIdCard',data, "POST",headers);
+

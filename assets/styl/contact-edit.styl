@@ -1,0 +1,67 @@
+#contacts
+    min-height 100vh
+    background #EEEDF2
+    overflow hidden
+    ul.contact-wrap
+        overflow hidden
+        li
+            display flex
+            width 355px
+            border-radius 5px
+            background-color #003366
+            padding-left 14px
+            height 75px
+            align-items center
+            justify-content space-between
+            // background #fff
+            // border-bottom 1px solid #797979
+            margin 20px auto 0
+            position relative
+            .status
+                position absolute
+                top 50%
+                right 16px
+                transform translate3d(0, -50%, 0)
+                font-size 18px
+                color #fff
+            .contact-bg
+                position absolute
+                width 54px
+                height 54px
+                bottom 0
+                right 22px
+                opacity 0.6
+            h2, p
+                line-height 1.5
+                color #fff
+            h2
+                font-size 16px
+            p
+                font-size 9px
+                // color #797979
+            .port-right
+                width 50px
+                height 45px
+                display flex
+                align-items center
+                justify-content space-around
+                border-left 2px solid #D7D7D7
+                font-size 9px
+                // color #CC3300
+                span:active
+                    opacity 0.6
+.add
+    position fixed
+    bottom 10px
+    left 50%
+    transform translate3d(-50%, 0, 0)
+    display block
+    // margin 15px auto 0
+    width 355px
+    background #003366
+    color #fff
+    border-radius 5px
+.contact-edit
+    width 224px
+    height 222px
+    border-radius 5px

@@ -13,7 +13,7 @@
                 <img src="~static/creditCard.png" class="icon" alt="">
                 <img src="~static/identifity.png" class="icon" alt="">
                 <!-- <i class="iconfont icon-contacts"></i> -->
-                <span>更多认证</span>
+                <nuxt-link tag="span" :to="{path:'/myself/moreIdent',query:{UserID:userinfo.UserID}}">更多认证</nuxt-link>
                 <van-icon name="arrow" />
               </p>
             </div>
@@ -26,9 +26,6 @@
             <span style="display:flex;align-items:center"><i class="iconfont icon-yinxingqia"></i><van-icon name="arrow" /></span>
           </div>
         </div>
-
-        <!-- <img :src="userinfo.WechatPic" alt=""> -->
-        <!-- <span style="margin-top:0;">{{userinfo.UserType | judgeLevel}}</span> -->
       </div>
       <div class="section2">
         <!-- 贷款用户 -->
@@ -71,10 +68,10 @@
           </van-cell>
         </van-cell-group>
         <ul class="base-fun-wrap">
-          <li>
+          <nuxt-link tag="li" :to="{path:'/myself/moreIdent',query:{UserID:userinfo.UserID}}">
             <i class="iconfont icon-guapai-copy" style="color:#17ABE3"></i>
             <span>挂牌</span>
-          </li>
+          </nuxt-link>
           <li>
             <i class="iconfont icon-kefu" style="color:#1AABA8"></i>
             <span>联系客服</span>
@@ -149,7 +146,7 @@ import storage from "~/api/storage.js";
 
 export default {
   async fetch() {},
-  async asyncData({ query, store }) {
+  async asyncData({ query, store ,redirect}) {
     let ayData = {};
     // console.log(store.state)
     await getUserInfo({
@@ -158,11 +155,13 @@ export default {
       }
     }).then(res => {
       // console.log(res.data)
+        // console.log("getUserInfo", res.data);
       if (res.data.StatusCode == 200) {
         ayData.userinfo = res.data.Data;
       } else if (res.data.StatusCode == 400) {
-        console.log("用户还未注册");
-        console.log("getUserInfo", res.data.data);
+        // redirect({path:'/'})
+        console.error("getUserInfo", res.data.Data);
+        // console.log("用户还未注册");
       }
       return res;
     });
