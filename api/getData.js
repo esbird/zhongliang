@@ -189,3 +189,21 @@ export const getUserLevel = (data,headers={}) => fetch('/api/Get/UserLevel',data
 
 export const postUserIdCard = (data,headers={}) => fetch('/api/Post/UserIdCard',data, "POST",headers);
 
+/**
+ * 更新亲密联系人
+ */
+
+export const postUserGuanxi = (data,headers={}) => fetch('/api/Post/UserGuanxi',data, "POST",headers);
+
+/**
+ * 更新余额
+ */
+
+export const postUserMoney = (data,headers={}) => fetch('/api/Post/UserMoney',data, "POST",headers);
+
+/**
+ * 获取账单列表
+ */
+
+export const getMoneyRecord = (data,headers={}) => fetch('/api/Get/UserMoney',data, "GET",headers);
+

@@ -54,6 +54,7 @@
 </template>
 <script>
 import {postUserIdCard,uploadPic} from '~/api/getData.js'
+import {idCardTest} from '~/api/utils.js'
 export default {
   data() {
     return {
@@ -84,17 +85,15 @@ export default {
       this.picFile2 = file;
     },
     async submit() {
-      if (
-        !this.postData.IdCard ||
-        !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(
-          this.postData.IdCard
-        )
-      ) {
-        this.$alert('身份证号格式错误');
-        return;
-      }else if(!this.postData.RealName){
+      if(!this.postData.RealName){
         // this.$toast.fail('姓名不能为空')
         this.$alert('姓名不能为空');
+        return;
+      }else if (
+        !this.postData.IdCard ||
+        !idCardTest(this.postData.IdCard)
+      ) {
+        this.$alert('身份证号格式错误');
         return;
       }else if(!this.pic1 || !this.pic2){
         this.$alert('请上传身份证');
@@ -104,28 +103,28 @@ export default {
         // 上传身份照片
         let fd = new FormData();
         // fd.append('uid',this.uid);
-        fd.append('name','hand_id_card');
+        fd.append('Type',1);
         fd.append('file',this.picFile1)
-        await saveIdCard(fd).then(res=>{
+        await uploadPic(fd).then(res=>{
           if(res.data.StatusCode==200){
             uplState =1;
-            this.postData.IdCardPicID = res.data.Data[0].FInterID
+            this.postData.IdCardPicID = res.data.Data[0].PicID
           }
         });
         
         // 上传身份照片
         let fd1 = new FormData();
-        fd1.append('uid',this.uid);
-        fd1.append('name','id_card');
+        // fd1.append('uid',this.uid);
+        fd1.append('Type',1);
         fd1.append('file',this.picFile2)
-        await saveIdCard(fd1).then(res=>{
+        await uploadPic(fd1).then(res=>{
           if(res.data.StatusCode==200){ 
             uplState=2;
-            this.postData.IdCardPicID2 = res.data.Data[0].FInterID
+            this.postData.IdCardPicID2 = res.data.Data[0].PicID
           } 
         });
         // 上传身份证信息
-        await postUserIdCard(this.postData).then(res=>{
+        await postUserIdCard({Data:this.postData}).then(res=>{
           if(res.data.StatusCode==200){
             uplState =3
           }
@@ -133,13 +132,9 @@ export default {
         toast.clear();
         if(uplState==3){
           // await this.$toast.success('身份信息上传成功');
-          await this.$dialog.alert({
-              title:'提醒',
-              message:'身份信息上传成功'
-            }).then(()=>{
-                //点击回调
-              this.$router.back();
-            })
+          this.$alert('上传成功，请等待后台审核结果').then(()=>{
+            this.$router.back();
+          })
         }else{
           // this.$toast.fail('上传失败')
           this.$dialog.alert({

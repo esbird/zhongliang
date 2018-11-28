@@ -1,7 +1,15 @@
 <template>
   <div id="moreIdent">
       <!-- <header></header> -->
+    <div class="notifity">
+      <h1><span style="font-weight:bold">1</span>项认证已完成</h1>
+      <p class="tip">认证有助于提升信用度快速通过审核</p>
+    </div>
     <ul class="base-fun-wrap">
+      <li>
+        <i class="iconfont icon-shouji1" style="color:#8A8A8A"></i>
+        <span>手机认证</span>
+      </li>
       <nuxt-link tag="li" :to="{path:'/myself/moreIdent/identifyCheck',query:{UserID}}">
         <i class="iconfont icon-shenfenzheng1" style="color:#8A8A8A"></i>
         <span>身份认证</span>
@@ -10,7 +18,6 @@
         <i class="iconfont icon-tuandui" style="color:#8A8A8A"></i>
         <span>亲密联系人</span>
       </nuxt-link>
-      <li></li>
     </ul>
   </div>
 </template>
@@ -47,6 +54,24 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
+.notifity
+  width 100%
+  height 158px
+  color #ffffff
+  background #0099FF
+  font-size 18px
+  position relative
+  h1
+    position absolute
+    left 8px
+    top 50%
+    transform translate3d(0,-50%,0)
+    span
+      font-size 60px
+  .tip
+    position absolute
+    bottom 10px
+    left 8px
 #moreIdent
     background #EEEDF2
     min-height 100vh

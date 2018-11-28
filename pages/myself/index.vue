@@ -10,8 +10,9 @@
               <p class="name">用户：{{userinfo.WechatName}}</p>
               <p class="tag">
                 <!-- <i class="iconfont icon-shenfenzheng"></i> -->
-                <img src="~static/creditCard.png" class="icon" alt="">
-                <img src="~static/identifity.png" class="icon" alt="">
+                <img v-if="userinfo.Listguanxi && userinfo.Listguanxi[0].IsChecked" src="~static/creditCard.png" class="icon" alt="">
+                <img v-if="userinfo.UserPhone" src="~static/photoCheck.png" class="icon" alt="">
+                <img v-if="userinfo.IdCardChecked" src="~static/identifity.png" class="icon" alt="">
                 <!-- <i class="iconfont icon-contacts"></i> -->
                 <nuxt-link tag="span" :to="{path:'/myself/moreIdent',query:{UserID:userinfo.UserID}}">更多认证</nuxt-link>
                 <van-icon name="arrow" />
@@ -23,7 +24,7 @@
               <p>总资产(元)</p>
               <p class="count">2000</p>
             </div>
-            <span style="display:flex;align-items:center"><i class="iconfont icon-yinxingqia"></i><van-icon name="arrow" /></span>
+            <nuxt-link tag="span" :to="{path:'/myself/asset',query:{UserID:userinfo.UserID}}" style="display:flex;align-items:center"><i class="iconfont icon-yinxingqia"></i><van-icon name="arrow" /></nuxt-link>
           </div>
         </div>
       </div>
