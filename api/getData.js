@@ -205,5 +205,5 @@ export const postUserMoney = (data,headers={}) => fetch('/api/Post/UserMoney',da
  * 获取账单列表
  */
 
-export const getMoneyRecord = (data,headers={}) => fetch('/api/Get/UserMoney',data, "GET",headers);
+export const getMoneyRecord = (data,headers={}) => fetch('/api/Get/UserMoney',data, "POST",headers);
 

@@ -1,34 +1,34 @@
 <template>
   <div id="moreIdent">
     <!-- 转入 -->
-    <div class="in">
+    <div class="in" v-if="$route.params.type==0">
       <p>转入金额</p>
-      <h2>￥<input type="text" class="count" value="99"></h2>
-      <button class="btn">提交审核</button>
+      <h2>￥<input type="number" class="count" v-model.number="money"></h2>
+      <button class="btn" @click="submit">提交审核</button>
     </div>
     <!-- 转出 -->
-    <div class="out">
+    <div class="out" v-if="$route.params.type==1">
       <p>提现金额</p>
-      <h2>￥<input type="text" class="count" ></h2>
+      <h2>￥<input type="number" class="count" v-model.number="money"></h2>
       <p style="color:#868686">资金金额12412.00 <span style="color:#003366">全部体现</span></p>
-      <button class="btn">提交审核</button>
+      <button class="btn" @click="submit">提交审核</button>
     </div>
     <!-- 账单 --> 
-    <ul class="record-wrap">
-      <li>
+    <ul class="record-wrap" v-if="$route.params.type==2">
+      <li v-for="(item,index) in recordList" :key="index">
         <div class="port-left">
-          <p>用途</p>
+          <p>{{item.FType | userType}}</p>
           <p class="time">12-20 12:20</p>
         </div>
-        <span class="count">审核中</span>
-        <span class="count">-222200.00</span>
+        <span class="count">{{item.IsChecked?'审核中':'已到账'}}</span>
+        <span class="count">{{item.FType==1 || item.FType==3?'+':'-'+item.FMoney}}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { getUserInfo ,getMoneyRecord,postUserMoney} from "~/api/getData.js";
+import { getUserInfo ,getMoneyRecord, postUserMoney} from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -38,19 +38,21 @@ export default {
     let ayData = {
       UserID: query.UserID
     };
+    console.log(params.type)
     switch (params.type) {
       // 转入
-      case 0:
+      case '0':
         
         break;
     
       // 转出
-      case 1:
+      case '1':
         
         break;
     
       // 账单
-      case 2:
+      case '2':
+        console.log(1)
         await getMoneyRecord({
           Data:{
             UserID:query.UserID
@@ -71,9 +73,61 @@ export default {
 
     return ayData;
   },
-  methods: {},
+  filters:{
+    userType(val){
+      switch (val) {
+      // 转入
+      case 0:
+        return '转入'
+        break;
+    
+      // 转出
+      case 1:
+        return '转出'
+        break;
+    
+      // 2 放款转出
+      case 2:
+        return '放款转出'
+        break;
+    
+      // 3  贷款转入
+      case 3:
+        return '贷款转入'
+        break;
+    
+      default:
+        break;
+    }
+    }
+  },
+  methods: {
+    async submit(){
+      if (!this.money) {
+        this.$alert('请先输入金额！')
+        return;
+      }
+      const loading = this.$loading();
+      await postUserMoney({Data:{
+        UserID:this.$route.query.UserID,
+        FType:this.$route.params.type,
+        FMoney:this.money
+      }}).then(res=>{
+        loading.clear();
+        if (res.data.StatusCode==200) {
+          this.$alert('提交成功,等待客服通知')
+            .then(()=>{
+              this.$router.back();
+            })
+        }else{
+          console.error('postUserMoney',res.data.Data)
+        }
+      })
+    }
+  },
   data() {
     return {
+      money:''
     };
   },
   head: {

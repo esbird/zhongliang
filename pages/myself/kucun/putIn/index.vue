@@ -1,16 +1,27 @@
 <template>
   <div>
-    <header>租赁信息</header>
+    <header>租赁申请</header>
     <div class="content">
-      <h2 class="van-doc-demo-block__title">产品分类</h2>
-        <van-cell-group>
-          <van-cell v-for="(item,index) in sortArr" :key="index"  arrow-direction="down" :value="item">
-            <span slot="title">{{'产品分类'+index}}</span>
-          </van-cell>
-        </van-cell-group>
-      <h2 class="van-doc-demo-block__title">产品名称</h2>
-      <van-field v-model="dataInfo.FName" readonly placeholder="请输入产品名称" />
-      <h2 class="van-doc-demo-block__title">所需平方</h2>
+      <van-cell-group>
+        <van-cell title="" is-link arrow-direction="down" />
+        <van-cell title="产品数量"  value="0"/>
+      </van-cell-group>
+      <h2 class="van-doc-demo-block__title">产品种类</h2>
+      <van-cell-group>
+        <table border="1" width="100%" frame="void">
+          <tbody>
+            <tr>
+              <td>品种</td>
+              <td>详情</td>
+            </tr>
+            <tr>
+              <td>管材</td>
+              <td><img src="~/static/arrow.png" alt=""><span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp; <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp; <span>数量</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </van-cell-group>
+      <!-- <h2 class="van-doc-demo-block__title">所需平方</h2>
       <van-field v-model="dataInfo.pingfang" readonly placeholder="请输入所需平方" />
       <h2 class="van-doc-demo-block__title">数量(数量)</h2>
       <van-field v-model="dataInfo.FNumber" readonly placeholder="请输入数量" />
@@ -25,14 +36,13 @@
           <li style="" v-for="(item,index) in picArr" :key="index"  v-lazy:background-image="item.WebSite">
             <van-icon name="close" class="close" style="" @click="rmvPic(item.id,index)" />
           </li>
-          <!-- <li ><input type="file" name="" id=""></li> -->
         </ul>
       </div>
       <h2 class="van-doc-demo-block__title">备注</h2>
       <textarea name="" class="desc" id="" readonly cols="30" rows="5" placeholder="备注" v-model="dataInfo.remark"></textarea>
       <h2 class="van-doc-demo-block__title">所需租金</h2>
       <van-field v-model="dataInfo.Price" readonly disabled style="color:#003366" placeholder="所需租金" />
-      <van-button size="large" style="" class="submit" @click="submit">支付租金</van-button>
+      <van-button size="large" style="" class="submit" @click="submit">支付租金</van-button> -->
     </div>
   </div>
 </template>
@@ -60,39 +70,60 @@ export default {
   },
   async asyncData({query}) {
     let ayData={};
-    await getZuLinDt({Data:{UserGoodsID:query.UserGoodsID}})
-      .then(res=>{
-        if (res.data.StatusCode==200) {
-          ayData.dataInfo = res.data.Data;
-        }
-      })
-    // 获取图片
-    await getPic({Data:{PicID:ayData.dataInfo.PicID}}).then(res=>{
-      if (res.data.StatusCode==200) {
-        ayData.picArr = res.data.Data;
-      }
-    })
+    // await getZuLinDt({Data:{UserGoodsID:query.UserGoodsID}})
+    //   .then(res=>{
+    //     if (res.data.StatusCode==200) {
+    //       ayData.dataInfo = res.data.Data;
+    //     }
+    //   })
+    // // 获取图片
+    // await getPic({Data:{PicID:ayData.dataInfo.PicID}}).then(res=>{
+    //   if (res.data.StatusCode==200) {
+    //     ayData.picArr = res.data.Data;
+    //   }
+    // })
     
-    // 分类信息 GoodsType
-    ayData.sortArr =[];
-    let presID = ayData.dataInfo.GoodsType || 10;
-    // console.log(ayData)
-    while (presID!=10) {
-      await getDicParent({Data:{ID:presID}}).then(async res=>{
+    // // 分类信息 GoodsType
+    // ayData.sortArr =[];
+    // let presID = ayData.dataInfo.GoodsType || 10;
+    // // console.log(ayData)
+    // while (presID!=10) {
+    //   await getDicParent({Data:{ID:presID}}).then(async res=>{
         
-        if (res.data.StatusCode==200) {
-          // console.log(res.data)
-          ayData.sortArr.unshift(res.data.Data[0].ItemName);
-          presID = res.data.Data[0].ItemParentID;
-        }
-      })
-    }
+    //     if (res.data.StatusCode==200) {
+    //       // console.log(res.data)
+    //       ayData.sortArr.unshift(res.data.Data[0].ItemName);
+    //       presID = res.data.Data[0].ItemParentID;
+    //     }
+    //   })
+    // }
     return ayData
   }
 };
 </script>
 
 <style lang='stylus' scoped>
+table
+  tr
+    td
+      height 40px
+      text-align center
+      font-size 16px
+      // display inline-flex
+      // justify-content space-around
+      position relative
+      img
+        width 15px
+        height 15px
+        position absolute
+        top 50%
+        right 15px
+        transform translate3d(0,-50%,0)
+
+      &:first-child
+        width 100px
+      &:last-child
+        width 300px
 .desc
   width 350px
   height 110px

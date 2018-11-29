@@ -22,8 +22,6 @@
   </div>
 </template>
 
-
-
 <script>
 import { getUserInfo } from "~/api/getData.js";
 import storage from "~/api/storage.js";

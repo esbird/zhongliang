@@ -28,6 +28,8 @@ import {
   Field,
   Cell,
   CellGroup,
+  Collapse, CollapseItem,
+  Row, Col
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
@@ -35,7 +37,11 @@ import '~/vant-css/lib/index.css';
 Vue
   .use(Button)
   .use(Icon)
+  .use(Row)
+  .use(Col)
   .use(RadioGroup)
+  .use(CollapseItem)
+  .use(Collapse)
   .use(Radio)
   .use(Tab)
   .use(Loading)

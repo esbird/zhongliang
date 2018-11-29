@@ -57,7 +57,7 @@
         </van-cell-group>
         <!-- 仓储用户 -->
         <van-cell-group  v-if="userinfo.UserType>=2">
-          <van-cell title="库管信息" is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory">
+          <van-cell title="库管信息" is-link :to="{path:'/myself/kucun',query:{UserID:userinfo.UserID}}" class="factory">
           </van-cell>
           <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory-wrap">
             <template slot="title">
