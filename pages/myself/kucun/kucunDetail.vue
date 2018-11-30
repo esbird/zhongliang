@@ -1,12 +1,17 @@
 <template>
   <div>
-    <header>租赁申请</header>
+    <header>库存详情</header>
     <div class="content">
       <van-cell-group>
-        <van-cell title is-link arrow-direction="down"/>
-        <van-field v-model="postData.val" type="number" label="产品数量" input-align="right" placeholder="请输入产品数量"/>
+        <van-cell title="平方" value="100平方"/>
+        <van-cell>
+          <span slot="title">时间</span>
+          开始时间：2018-05-05<br>
+          结束时间：2018-05-05
+        </van-cell>
+        <!-- <van-field v-model="postData.val" type="number" label="产品数量" input-align="right" placeholder="请输入产品数量"/> -->
       </van-cell-group>
-      <h2 class="van-doc-demo-block__title">产品种类</h2>
+      <!-- <h2 class="van-doc-demo-block__title">产品种类</h2> -->
       <van-cell-group>
         <table border="1" width="100%" frame="void">
           <tbody>
@@ -17,7 +22,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -27,7 +31,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -37,7 +40,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -47,7 +49,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -57,7 +58,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,7 +67,6 @@
             <tr @click="showBase=true">
               <td>管材</td>
               <td>
-                <img src="~/static/arrow.png" alt>
                 <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -79,10 +78,11 @@
       </van-cell-group>
       <van-cell-group>
         <!-- <h2 class="van-doc-demo-block__title">所需平方</h2> -->
-        <van-field v-model="postData.val" label="所需平方" input-align="right" placeholder="请输入所需平方"/>
-        <van-field v-model="postData.val" label="所需天数" input-align="right" placeholder="请输入所需天数"/>
+        <!-- <van-field v-model="postData.val" label="所需平方" input-align="right" placeholder="请输入所需平方"/>
+        <van-field v-model="postData.val" label="所需天数" input-align="right" placeholder="请输入所需天数"/> -->
 
         <!-- <h2 class="van-doc-demo-block__title">联系方式</h2> -->
+        <van-field v-model="postData.val" label="提交人" input-align="right" placeholder="请输入提交人"/>
         <van-field v-model="postData.val" label="联系方式" input-align="right" placeholder="请输入联系方式"/>
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
@@ -106,9 +106,23 @@
           placeholder="预计租金"
         />
       </van-cell-group>
-      <van-button size="large" style class="submit" @click="submit">提交订单</van-button>
+      <!-- <van-button size="large" style class="submit" @click="submit">提交订单</van-button> -->
+      <ul class="base-fun-wrap">
+        <nuxt-link tag="li" :to="{path:'/myself/kucun/putIn'}">
+          <i class="iconfont icon-zhuanru" style="color:#8A8A8A"></i>
+          <span>入库</span>
+        </nuxt-link>
+        <!-- <nuxt-link tag="li" :to="{path:'/myself/asset/1',query:{UserID}}">
+          <i class="iconfont icon-zhuanchu" style="color:#8A8A8A"></i>
+          <span>出库</span>
+        </nuxt-link> -->
+        <nuxt-link tag="li" :to="{path:'/myself/kucun/2'}">
+          <i class="iconfont icon-zhangdan" style="color:#8A8A8A"></i>
+          <span>出库</span>
+        </nuxt-link>
+        <li></li>
+      </ul>
     </div>
-    <scc-sku v-model="showBase"></scc-sku>
   </div>
 </template>
 <script>
@@ -122,21 +136,14 @@ export default {
     return {
       postData: {
         val: ""
-      },
-      goods: {
-        // 商品标题
-        title: "测试商品",
-        // 默认商品 sku 缩略图
-        picture: "https://img.yzcdn.cn/1.jpg"
-      },
-      showBase: false,
+      }
     };
   },
   methods: {
     async submit() {}
   },
   head: {
-    title: "中良科技"
+    title: "库存详情"
   },
   components: {
     "scc-sku": SccSku
@@ -224,7 +231,7 @@ table
   font-size 20px
 .content
   background #f2f2f2
-  height 'calc(100vh - %s)' % 100px
+  height 'calc(100vh - %s)' % 40px
   overflow-y auto
 .section1
   width 100%
@@ -244,6 +251,29 @@ table
     font-size 16px
     margin-top 10px
     color #fff
+
+.base-fun-wrap
+  display flex
+  background #f2f2f2
+  width 100%
+  justify-content space-between
+  border-bottom 1.2px solid #BCBCBC
+  margin-top 15px
+  li
+    width 124px
+    height 85px
+    background #fff
+    display flex
+    flex-direction column
+    align-items center
+    justify-content center
+    .iconfont
+      font-size 40px
+    span
+      margin-top 8px
+      font-size 12px
+      color #868686
+
 .section3
   // height 2.(5px/2)
   background #fff

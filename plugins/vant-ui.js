@@ -29,7 +29,7 @@ import {
   Cell,
   CellGroup,
   Collapse, CollapseItem,
-  Row, Col
+  Sku
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
@@ -37,8 +37,7 @@ import '~/vant-css/lib/index.css';
 Vue
   .use(Button)
   .use(Icon)
-  .use(Row)
-  .use(Col)
+  .use(Sku)
   .use(RadioGroup)
   .use(CollapseItem)
   .use(Collapse)

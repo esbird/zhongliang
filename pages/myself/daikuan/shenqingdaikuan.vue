@@ -4,7 +4,7 @@
     <div class="content">
       <div class="daikuan-box">
         <p>可贷款金额</p>
-        <h2><span>￥</span>{{userinfo.FMoney}}</h2>
+        <h2><span>￥</span>{{userInfo.FMoney}}</h2>
       </div>
       <h2 class="van-doc-demo-block__title">贷款金额</h2>
       <van-field v-model.number="dataInfo.FMoney" type="number" placeholder="请输入贷款金额" />
@@ -95,7 +95,7 @@ export default {
   data() {
     return {
       xieyi:false,
-      userinfo:{},
+      // userinfo:{},
       dataInfo:{
         UserID:'',
         FMoney:'',
@@ -111,8 +111,24 @@ export default {
   components: {
   },
   mounted() {
-    this.userinfo=JSON.parse(storage.get('userInfo'));
-    this.dataInfo.UserID = this.userinfo.UserID;
+    // this.userinfo=JSON.parse(storage.get('userInfo'));
+    this.dataInfo.UserID = this.userInfo.UserID;
+  },
+  async asyncData({query}){
+    let ayData = {}
+    await getUserInfo({
+      Data:{
+        UserID:query.UserID
+      }
+    })
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.userInfo =res.data.Data;
+        }else{
+          console.error('getUserInfo',res.data.Data)
+        }
+      })
+    return ayData
   }
 };
 </script>

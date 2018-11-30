@@ -11,8 +11,8 @@
             <span style="color:#003366">剩余360天</span>
           </van-cell>
           <div class="btn-wrap">
-            <button>查看详情</button>
-            <button style="background:#fff;color:#000">抵押贷款</button>
+            <nuxt-link tag="button" :to="{path:'/myself/kucun/kucunDetail',query:{UserID}}">查看详情</nuxt-link>
+            <nuxt-link tag="button" :to="{path:'/myself/daikuan/shenqingdaikuan',query:{UserID}}" style="background:#fff;color:#000">抵押贷款</nuxt-link>
           </div>
         </van-cell-group>
     <ul class="base-fun-wrap">
@@ -24,7 +24,7 @@
         <i class="iconfont icon-zhuanchu" style="color:#8A8A8A"></i>
         <span>出库</span>
       </nuxt-link> -->
-      <nuxt-link tag="li" :to="{path:'/myself/kucun/2',query:{UserID}}">
+      <nuxt-link tag="li" :to="{path:'/myself/kucun/record',query:{UserID}}">
         <i class="iconfont icon-zhangdan" style="color:#8A8A8A"></i>
         <span>记录</span>
       </nuxt-link>
