@@ -2,7 +2,7 @@
   <div id="moreIdent">
     <!-- <header></header> -->
     <van-cell-group >
-          <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:UserID}}" class="factory-wrap">
+          <van-cell class="factory-wrap">
             <template slot="title">
               <p style="font-weight:500">场地编号</p>
               <p class="time">开始时间:</p>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getUserInfo } from "~/api/getData.js";
+import { getUserInfo,getZuLin } from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -45,6 +45,21 @@ export default {
     let ayData = {
       UserID: query.UserID
     };
+    await getZuLin({
+      Data:{
+        UserID:query.UserID,
+        IsChecked:0,
+        IsPay:0
+      }
+    })
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.zuLingList = res.data.Data;
+        }else{
+          console.log('getZuLin',res.data.Data)
+        }
+      })
+    
     return ayData;
   },
   methods: {},

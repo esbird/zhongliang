@@ -2,10 +2,16 @@
   <div>
     <header>租赁申请</header>
     <div class="content">
-      <van-cell-group>
+      <!-- <van-cell-group>
         <van-cell title is-link arrow-direction="down"/>
-        <van-field v-model="postData.val" type="number" label="产品数量" input-align="right" placeholder="请输入产品数量"/>
-      </van-cell-group>
+        <van-field
+          v-model="postData.val"
+          type="number"
+          label="产品数量"
+          input-align="right"
+          placeholder="请输入产品数量"
+        />
+      </van-cell-group> -->
       <h2 class="van-doc-demo-block__title">产品种类</h2>
       <van-cell-group>
         <table border="1" width="100%" frame="void">
@@ -14,66 +20,17 @@
               <td>品种</td>
               <td>详情</td>
             </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
+            <tr v-for="(item,index) in EntryData" :key="index" >
+              <td>{{item.FGoodsName}}</td>
               <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
+                <img @click="del(index)" src="~/static/cuo.png" alt>
+                <span>{{item.SecondName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{{item.xinghaoName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{{item.guigeName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>x{{item.FNumber}}</span>
               </td>
             </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <img src="~/static/arrow.png" alt>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
+            <tr><td colspan='2' @click="showBase=true"><i class="iconfont icon-jia"></i></td></tr>
           </tbody>
         </table>
       </van-cell-group>
@@ -87,7 +44,9 @@
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
       <van-cell-group>
-        <van-field
+        <van-cell title="所需押金" :value="computPrice" />
+        <van-cell title="预计租金" :value="computPrice/2" />
+        <!-- <van-field
           v-model="postData.val"
           label="所需押金"
           input-align="right"
@@ -104,15 +63,21 @@
           disabled
           style="color:#003366"
           placeholder="预计租金"
-        />
+        /> -->
       </van-cell-group>
       <van-button size="large" style class="submit" @click="submit">提交订单</van-button>
     </div>
-    <scc-sku v-model="showBase"></scc-sku>
+    <scc-sku v-model="showBase" :baseData="baseData" :selectedIndex="selectedIndex" @submit="setItem"></scc-sku>
   </div>
 </template>
 <script>
-import { getZuLinDt, getPic, getDicParent } from "~/api/getData.js";
+import {
+  getZuLinDt,
+  getPic,
+  getDicParent,//获取父级分类
+  getSortList,//获取分类
+  postZuLin,
+} from "~/api/getData.js";
 import SccSku from "~/components/sccSku.vue";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
@@ -120,7 +85,19 @@ import SccSku from "~/components/sccSku.vue";
 export default {
   data() {
     return {
+      selectedIndex:0,
+      EntryData:[],
       postData: {
+        UserID: 1,  
+        PicID: 1,  //
+        pingfang: 1,  //  平方
+        Price: 1,  
+        FDays: 1,   //所需天数
+        FName: 1,  //  联系人
+        UserPhone: 1, // 电话
+        remark: 1, // 
+        FOrderNumber: 1,  //订单编号  时间戳
+
         val: ""
       },
       goods: {
@@ -129,11 +106,41 @@ export default {
         // 默认商品 sku 缩略图
         picture: "https://img.yzcdn.cn/1.jpg"
       },
-      showBase: false,
+      showBase: false
     };
   },
+  computed:{
+    computPrice(){
+      if (this.postData.pingfang && this.postData.FDays) {
+        return  this.postData.pingfang*this.postData.FDays;
+      }else{
+        return 0
+
+      }
+    }
+  },
   methods: {
-    async submit() {}
+    // 删除
+    del(index){
+      this.$dialog.confirm({
+        title:'提醒',
+        message:'确定删除这条吗？'
+      })
+        .then(()=>{
+          this.EntryData.splice(index,1)
+        }).catch(()=>{
+          console.log('取消了删除')
+        })
+    },
+    setItem(item){
+      this.EntryData.push(item);
+    },
+    // 提交审核
+    async submit() {
+      
+      await postZuLin
+
+    }
   },
   head: {
     title: "中良科技"
@@ -142,24 +149,67 @@ export default {
     "scc-sku": SccSku
   },
   async asyncData({ query }) {
-    let ayData = {};
-    // await getZuLinDt({Data:{UserGoodsID:query.UserGoodsID}})
-    //   .then(res=>{
-    //     if (res.data.StatusCode==200) {
-    //       ayData.dataInfo = res.data.Data;
-    //     }
-    //   })
-    // // 获取图片
-    // await getPic({Data:{PicID:ayData.dataInfo.PicID}}).then(res=>{
-    //   if (res.data.StatusCode==200) {
-    //     ayData.picArr = res.data.Data;
-    //   }
-    // })
+    let ayData = {
+      baseData:{}
+    };
+    // 获取一级分类：管材，板材
+    await getSortList({
+      Data: {
+        ItemParentID: 10
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.baseData.sortLv1Arr = res.data.Data;
+      }
+    });
+    // 获取二级分类
+    await getSortList({
+      Data: {
+        ItemParentID: 11
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.baseData.sortLv2Arr = res.data.Data;
+      }
+    });
+    
+    // 获取规格分类
+    await getSortList({
+      Data: {
+        ItemParentID: 21
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.baseData.sizeArr = res.data.Data;
+      }
+    });
+    // 获取标准型号分类
+    await getSortList({
+      Data: {
+        ItemParentID: 23
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.baseData.typeStandardArr = res.data.Data;
+      }
+    });
+    // 获取型号分类
+    await getSortList({
+      Data: {
+        ItemParentID: 36
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.baseData.typeArr = res.data.Data;
+      }
+    });
 
-    // // 分类信息 GoodsType
-    // ayData.sortArr =[];
+
+
+    // 分类信息 GoodsType
+    // ayData.sortArr = [];
     // let presID = ayData.dataInfo.GoodsType || 10;
-    // // console.log(ayData)
+    // console.log(ayData)
     // while (presID!=10) {
     //   await getDicParent({Data:{ID:presID}}).then(async res=>{
 
@@ -184,6 +234,9 @@ table
       // display inline-flex
       // justify-content space-around
       position relative
+      i.iconfont 
+        font-size 30px
+        color #C1C1C1
       img
         width 15px
         height 15px
