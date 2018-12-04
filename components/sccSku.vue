@@ -196,6 +196,9 @@ export default {
         })
     },
   },
+  mounted() {
+    // this.selectedArr = [null,null,null,null];
+  },
   created() {
     // let index = this.itemArr.indexOf(this.selectedItem);
     this.selectedType.index = 0;

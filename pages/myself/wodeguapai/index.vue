@@ -5,7 +5,7 @@
     <van-tabs v-model="active">
       <van-tab title="通过审核">
         <div class="content">
-          <ul>
+          <ul v-if="passList.length">
             <li v-for="(item,index) in passList" :key="index">
               <img src="~/static/cuo.png" alt="" class="cuo" @click="goDel(item.FInterID,'passList',index)">
               <div class="port-top">
@@ -18,11 +18,12 @@
               </div>
             </li>
           </ul>
+          <wu v-else></wu>
         </div>
       </van-tab>
       <van-tab title="审核中">
         <div class="content">
-          <ul>
+          <ul  v-if="applyingList.length">
             <li v-for="(item,index) in applyingList" :key="index">
               <div class="port-top">
                 <img v-lazy="item.WebSite" alt="">
@@ -34,11 +35,12 @@
               </div>
             </li>
           </ul>
+          <wu v-else></wu>
         </div>
       </van-tab>
       <van-tab title="未通过">
         <div class="content">
-          <ul>
+          <ul v-if="cutList.length">
             <li v-for="(item,index) in cutList" :key="index">
               <img src="~/static/cuo.png" alt="" class="cuo" @click="goDel(item.FInterID,'cutList',index)">
               <div class="port-top">
@@ -51,22 +53,27 @@
               </div>
             </li>
           </ul>
-
+          <wu v-else></wu>
         </div>
       </van-tab>
     </van-tabs>
+    <van-button size="large" style="" class="submit" @click="apply">申请挂牌</van-button>
 
   </div>
 </template>
 
 <script>
 import { getUserGuapai,delUserGuapai } from "~/api/getData.js";
+import Wu from '~/components/wu.vue'
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
-
 export default {
   methods: {
+    apply(){
+      this.$router.push({path:'/myself/woyaoguapai',query:{UserID:this.$route.query.UserID}});
+
+    },
     goDel(FInterID,arrName,index) {
       this.$dialog
         .confirm({
@@ -113,7 +120,9 @@ export default {
   head: {
     title: "中良科技"
   },
-  components: {},
+  components: {
+    'wu':Wu
+  },
   async asyncData({ query }) {
     let ayData = {};
     // 通过审核
@@ -144,6 +153,13 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
+.submit
+  color #fff;
+  background #003366
+  font-weight bold
+  position fixed
+  bottom 0;
+  left 0;
 .content
   background: #f2f2f2;
   padding: 20px 12px;

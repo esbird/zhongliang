@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import dayjs from 'dayjs'
-export function dateFormat (date,formatStr) {
+function dateFormat (date,formatStr) {
   
   return dayjs(date).format(formatStr);
+}
+function endTime(val, params) {
+  return dayjs(parseInt(val)).add(params, "d");
+}
+function leftDays(val, params) {
+  let nowDate = dayjs();
+  let day = dayjs(parseInt(val));
+  let du = nowDate.diff(day, "day");
+  // console.log(du)
+  return params - du;
 }
 function judgeState(val){
   let state ='';
@@ -41,6 +51,8 @@ function judgeLevel(val){
 }
 
 const filters = {
+  endTime,
+  leftDays,
   dateFormat,
   judgeState,
   judgeLevel

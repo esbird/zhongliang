@@ -17,7 +17,7 @@ let baseImgPath,Tel;
 // 	  baseUrl = 'http://cangdu.org:8001';
 //     baseImgPath = 'http://cangdu.org:8001/img/';
 // }
-// baseUrl = 'http://192.168.11.102'
+// baseUrl = 'http://192.168.11.103'
 baseUrl = 'http://zlapi.gmax1.com'
 baseImgPath='http://www.wengwenglove.com/'
 Tel='1235423453224'

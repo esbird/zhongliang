@@ -29,13 +29,16 @@ import {
   Cell,
   CellGroup,
   Collapse, CollapseItem,
-  Sku
+  Sku,
+  Checkbox, CheckboxGroup
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
 
 Vue
   .use(Button)
+  .use(Checkbox)
+  .use(CheckboxGroup)
   .use(Icon)
   .use(Sku)
   .use(RadioGroup)

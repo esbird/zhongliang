@@ -207,3 +207,9 @@ export const postUserMoney = (data,headers={}) => fetch('/api/Post/UserMoney',da
 
 export const getMoneyRecord = (data,headers={}) => fetch('/api/Get/UserMoney',data, "POST",headers);
 
+/**
+ * 获取库存记录
+ */
+
+export const getKuCunRecord = (data,headers={}) => fetch('/api/Get/chuku',data, "POST",headers);
+

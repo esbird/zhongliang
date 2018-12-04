@@ -30,7 +30,7 @@
       </div>
       <div class="section2">
         <!-- 贷款用户 -->
-        <van-cell-group  v-if="userinfo.UserType>=2">
+        <van-cell-group  v-if="userinfo.UserType>=3">
           <van-cell title="贷款" is-link :to="{path:'/myself/wodedaikuan',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-daikuan van-cell__left-icon" style="color:#87A7D6"></i>
@@ -56,7 +56,7 @@
           </van-cell>
         </van-cell-group>
         <!-- 仓储用户 -->
-        <van-cell-group  v-if="userinfo.UserType>=2">
+        <van-cell-group  v-if="userinfo.UserType>=1">
           <van-cell title="库管信息" is-link :to="{path:'/myself/kucun',query:{UserID:userinfo.UserID}}" class="factory">
           </van-cell>
           <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory-wrap">
@@ -69,7 +69,7 @@
           </van-cell>
         </van-cell-group>
         <ul class="base-fun-wrap">
-          <nuxt-link tag="li" :to="{path:'/myself/moreIdent',query:{UserID:userinfo.UserID}}">
+          <nuxt-link tag="li" :to="{path:'/myself/wodeguapai',query:{UserID:userinfo.UserID}}">
             <i class="iconfont icon-guapai-copy" style="color:#17ABE3"></i>
             <span>挂牌</span>
           </nuxt-link>

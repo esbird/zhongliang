@@ -36,34 +36,38 @@
       </van-cell-group>
       <van-cell-group>
         <!-- <h2 class="van-doc-demo-block__title">所需平方</h2> -->
-        <van-field v-model="postData.val" label="所需平方" input-align="right" placeholder="请输入所需平方"/>
-        <van-field v-model="postData.val" label="所需天数" input-align="right" placeholder="请输入所需天数"/>
-
+        <van-field v-model.number="postData.pingfang" label="所需平方" type="number"  input-align="right" placeholder="请输入所需平方"/>
+        <!-- <van-popup v-model="show1" position="bottom">
+          <van-picker
+            ref="pingfangpicker"
+            show-toolbar
+            title="选择店铺"
+            :columns="pingFangArr"
+            @cancel="onCancel"
+            @confirm="onConfirm1"
+            
+          />
+        </van-popup> -->
+        <van-field v-model.number="postData.FDays" label="所需天数" type="number" input-align="right" placeholder="请输入所需天数"/>
+        <!-- <van-popup v-model="show2" position="bottom">
+          <van-picker
+            show-toolbar
+            ref="daypicker"
+            title="选择天数"
+            :columns="dayArr"
+            @cancel="onCancel"
+            @confirm="onConfirm2"
+            
+          />
+        </van-popup> -->
         <!-- <h2 class="van-doc-demo-block__title">联系方式</h2> -->
-        <van-field v-model="postData.val" label="联系方式" input-align="right" placeholder="请输入联系方式"/>
+        <van-field v-model="postData.FName" label="联系人" input-align="right" placeholder="请输入联系方式"/>
+        <van-field v-model.number="postData.UserPhone" label="联系方式" type="number" input-align="right" placeholder="请输入联系方式"/>
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
       <van-cell-group>
         <van-cell title="所需押金" :value="computPrice" />
         <van-cell title="预计租金" :value="computPrice/2" />
-        <!-- <van-field
-          v-model="postData.val"
-          label="所需押金"
-          input-align="right"
-          readonly
-          disabled
-          style="color:#003366"
-          placeholder="所需押金"
-        />
-        <van-field
-          v-model="postData.val"
-          label="预计租金"
-          input-align="right"
-          readonly
-          disabled
-          style="color:#003366"
-          placeholder="预计租金"
-        /> -->
       </van-cell-group>
       <van-button size="large" style class="submit" @click="submit">提交订单</van-button>
     </div>
@@ -79,6 +83,7 @@ import {
   postZuLin,
 } from "~/api/getData.js";
 import SccSku from "~/components/sccSku.vue";
+import {phoneTest} from '~/api/utils.js'
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -88,18 +93,20 @@ export default {
       selectedIndex:0,
       EntryData:[],
       postData: {
-        UserID: 1,  
-        PicID: 1,  //
-        pingfang: 1,  //  平方
-        Price: 1,  
-        FDays: 1,   //所需天数
-        FName: 1,  //  联系人
-        UserPhone: 1, // 电话
-        remark: 1, // 
-        FOrderNumber: 1,  //订单编号  时间戳
-
-        val: ""
+        UserID: 0,  
+        PicID: 0,  //
+        pingfang: '',  //  平方
+        pingfangIndex:0,
+        Price: 0,  
+        FDays: '',   //所需天数
+        FDaysIndex: 0,   //
+        FName: 0,  //  联系人
+        UserPhone: '', // 电话
+        remark: 0, // 
+        FOrderNumber: 0,  //订单编号  时间戳
       },
+      show1:false,
+      show2:false,
       goods: {
         // 商品标题
         title: "测试商品",
@@ -109,17 +116,30 @@ export default {
       showBase: false
     };
   },
+  
   computed:{
     computPrice(){
       if (this.postData.pingfang && this.postData.FDays) {
         return  this.postData.pingfang*this.postData.FDays;
       }else{
         return 0
-
       }
     }
   },
   methods: {
+    // onConfirm1(val,index){
+    //   this.postData.pingfang = val;
+    //   this.postData.pingfangIndex = index;
+    //   this.show1 = false;
+    // },
+    // onConfirm2(val,index){
+    //   this.postData.FDays = val;
+    //   this.postData.FDaysIndex = index;
+    //   this.show2 = false;
+    // },
+    // onCancel(){
+    //   console.log('取消了')
+    // },
     // 删除
     del(index){
       this.$dialog.confirm({
@@ -133,12 +153,59 @@ export default {
         })
     },
     setItem(item){
-      this.EntryData.push(item);
+      console.log(item)
+      let obj = {};
+      obj= JSON.parse(JSON.stringify(item));
+      this.EntryData.push(obj);
     },
     // 提交审核
     async submit() {
+      if (!this.EntryData.length) {
+        this.$alert('产品不能为空')
+        return ;
+      }
+      if (!this.postData.pingfang) {
+        this.$alert('请输入平方')
+        return;
+      }else if(!(this.postData.pingfang>=1&&this.postData.pingfang<=1000)){
+        this.$alert('平方范围 1——1000平方')
+        return;
+      }
+      if (!this.postData.FDays) {
+        this.$alert('请输入天数')
+        return ;
+      }else if(!(this.postData.FDays>=3&&this.postData.FDays<=365)){
+        this.$alert('天数范围 3——365天')
+        return;
+      }
+      if (!this.postData.FName) {
+        this.$alert('请填写联系人！')
+        return ;
+      }
+      if (!phoneTest(this.postData.UserPhone)) {
+        this.$alert('手机号格式错误！')
+        return ;
+      }
+      this.EntryData.forEach((element,index) => {
+        element.FEntryID = index;
+      });
       
-      await postZuLin
+      this.postData.Entry = this.EntryData;
+      this.postData.UserID = this.$route.query.UserID;
+      this.postData.FOrderNumber = (new Date()).valueOf();
+
+
+      await postZuLin({
+        Data:this.postData
+      }).then(res=>{
+        if (res.data.StatusCode=200) {
+          this.$alert('审核提交成功，请等待后台审核').then(()=>{
+            this.$router.back();
+          })
+        }else{
+          console.log('postZuLin',res.data.Data)
+        }
+      })
 
     }
   },
@@ -203,7 +270,16 @@ export default {
         ayData.baseData.typeArr = res.data.Data;
       }
     });
-
+    // ayData.pingFangArr =[];
+    // for (let index = 1; index <= 1000; index++) {
+    //   ayData.pingFangArr.push(index);
+      
+    // }
+    // ayData.dayArr =[]
+    // for (let index = 3; index <= 365; index++) {
+    //   ayData.dayArr.push(index);
+      
+    // }
 
 
     // 分类信息 GoodsType

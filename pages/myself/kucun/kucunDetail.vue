@@ -3,11 +3,11 @@
     <header>库存详情</header>
     <div class="content">
       <van-cell-group>
-        <van-cell title="平方" value="100平方"/>
+        <van-cell title="平方" :value="parseInt(dataInfo.pingfang)"/>
         <van-cell>
           <span slot="title">时间</span>
-          开始时间：2018-05-05<br>
-          结束时间：2018-05-05
+          开始时间：{{parseInt(dataInfo.FOrderNumber) | dateFormat('YYYY-MM-DD')}}<br>
+          结束时间：{{dataInfo.FOrderNumber | endTime(dataInfo.FDays) | dateFormat('YYYY-MM-DD')}}
         </van-cell>
         <!-- <van-field v-model="postData.val" type="number" label="产品数量" input-align="right" placeholder="请输入产品数量"/> -->
       </van-cell-group>
@@ -19,58 +19,13 @@
               <td>品种</td>
               <td>详情</td>
             </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
+            <tr v-for="(item,index) in dataInfo.Entry" :key="index">
+              <td>{{item.FGoodsName}}</td>
               <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
-              </td>
-            </tr>
-            <tr @click="showBase=true">
-              <td>管材</td>
-              <td>
-                <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>数量</span>
+                <span>{{item.SecondName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{{item.xinghaoName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{{item.guigeName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>x{{item.FNumber}}</span>
               </td>
             </tr>
           </tbody>
@@ -82,41 +37,20 @@
         <van-field v-model="postData.val" label="所需天数" input-align="right" placeholder="请输入所需天数"/> -->
 
         <!-- <h2 class="van-doc-demo-block__title">联系方式</h2> -->
-        <van-field v-model="postData.val" label="提交人" input-align="right" placeholder="请输入提交人"/>
-        <van-field v-model="postData.val" label="联系方式" input-align="right" placeholder="请输入联系方式"/>
+        <van-field v-model="dataInfo.FName" label="提交人" readonly input-align="right" placeholder="请输入提交人"/>
+        <van-field v-model="dataInfo.UserPhone" label="联系方式" readonly input-align="right" placeholder="请输入联系方式"/>
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
       <van-cell-group>
-        <van-field
-          v-model="postData.val"
-          label="所需押金"
-          input-align="right"
-          readonly
-          disabled
-          style="color:#003366"
-          placeholder="所需押金"
-        />
-        <van-field
-          v-model="postData.val"
-          label="预计租金"
-          input-align="right"
-          readonly
-          disabled
-          style="color:#003366"
-          placeholder="预计租金"
-        />
+        <van-cell title="所需押金" :value="computPrice" />
+        <van-cell title="预计租金" :value="computPrice/2" />
       </van-cell-group>
-      <!-- <van-button size="large" style class="submit" @click="submit">提交订单</van-button> -->
       <ul class="base-fun-wrap">
-        <nuxt-link tag="li" :to="{path:'/myself/kucun/putIn'}">
+        <nuxt-link tag="li" :to="{path:'/myself/kucun/putOut',query:{UserGoodsID:$route.query.UserGoodsID}}">
           <i class="iconfont icon-zhuanru" style="color:#8A8A8A"></i>
           <span>入库</span>
         </nuxt-link>
-        <!-- <nuxt-link tag="li" :to="{path:'/myself/asset/1',query:{UserID}}">
-          <i class="iconfont icon-zhuanchu" style="color:#8A8A8A"></i>
-          <span>出库</span>
-        </nuxt-link> -->
-        <nuxt-link tag="li" :to="{path:'/myself/kucun/2'}">
+        <nuxt-link tag="li" :to="{path:'/myself/kucun/putOut',query:{UserGoodsID:$route.query.UserGoodsID}}">
           <i class="iconfont icon-zhangdan" style="color:#8A8A8A"></i>
           <span>出库</span>
         </nuxt-link>
@@ -145,17 +79,27 @@ export default {
   head: {
     title: "库存详情"
   },
+  computed:{
+    computPrice(){
+      if (this.dataInfo.pingfang && this.dataInfo.FDays) {
+        return  this.dataInfo.pingfang*this.dataInfo.FDays;
+      }else{
+        return 0
+
+      }
+    }
+  },
   components: {
     "scc-sku": SccSku
   },
   async asyncData({ query }) {
     let ayData = {};
-    // await getZuLinDt({Data:{UserGoodsID:query.UserGoodsID}})
-    //   .then(res=>{
-    //     if (res.data.StatusCode==200) {
-    //       ayData.dataInfo = res.data.Data;
-    //     }
-    //   })
+    await getZuLinDt({Data:{UserGoodsID:query.UserGoodsID}})
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.dataInfo = res.data.Data;
+        }
+      })
     // // 获取图片
     // await getPic({Data:{PicID:ayData.dataInfo.PicID}}).then(res=>{
     //   if (res.data.StatusCode==200) {

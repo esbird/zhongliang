@@ -3,47 +3,29 @@
     <header>出入库记录</header>
     <div class="content">
       <ul>
-        <li>
-          <p class="order_num" style="color:#949494">出库订单编号：</p>
-          <p>
+        <li v-for="(item,index) in zuLingList" :key="index">
+          <p class="order_num" style="color:#949494">{{item.Type?'出库':'入库'}}订单编号：{{item.FOrderNumber}}</p>
+          <p v-for="(ite,idx) in item.Entry" :key="idx">
+            <span>{{ite.FGoodsName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>{{ite.xinghaoName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>{{ite.guigeName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>x{{ite.FNumber}}</span>
+          </p>
+          <!-- <p>
             <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
             <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
             <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
             <span>数量</span>
-          </p>
-          <p>
-            <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>数量</span>
-          </p>
-          <p class="port-bottom"><span class="name">创建人：</span><span class="time">2018-08-08</span></p>
-          <span class="van-sku-row__item statue">审核中</span>
-        </li>
-        <li>
-          <p class="order_num" style="color:#949494">入库订单编号：</p>
-          <p>
-            <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>数量</span>
-          </p>
-          <p>
-            <span>品种</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>型号</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span>数量</span>
-          </p>
-          <p class="port-bottom"><span class="name">创建人：</span><span class="time">2018-08-08</span></p>
-          <span class="van-sku-row__item statue">审核中</span>
+          </p> -->
+          <p class="port-bottom"><span class="name">预留电话：{{item.UserPhone}}</span><span class="time">{{parseInt(item.FOrderNumber) | dateFormat('YYYY-MM-DD')}}</span></p>
+          <span class="van-sku-row__item statue">{{item.IsChecked | judgeState}}</span>
         </li>
       </ul>
-
     </div>
   </div>
 </template>
 <script>
-import { getZuLinDt, getPic, getDicParent } from "~/api/getData.js";
+import { getKuCunRecord } from "~/api/getData.js";
 import SccSku from "~/components/sccSku.vue";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
@@ -67,6 +49,17 @@ export default {
   },
   async asyncData({ query }) {
     let ayData = {};
+    await getKuCunRecord({
+      Data: {
+        UserID: query.UserID,
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.zuLingList = res.data.Data;
+      } else {
+        console.log("getZuLin", res.data.Data);
+      }
+    });
     return ayData;
   }
 };
