@@ -30,7 +30,7 @@ import {
   CellGroup,
   Collapse, CollapseItem,
   Sku,
-  Checkbox, CheckboxGroup
+  Checkbox, CheckboxGroup,
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
@@ -40,6 +40,8 @@ Vue
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(Icon)
+  .use(Step)
+  .use(Steps)
   .use(Sku)
   .use(RadioGroup)
   .use(CollapseItem)
@@ -50,8 +52,6 @@ Vue
   .use(Picker)
   .use(Tabs)
   .use(Popup)
-  .use(Step)
-  .use(Steps)
   .use(Stepper)
   .use(Search)
   .use(DatetimePicker)

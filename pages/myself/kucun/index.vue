@@ -16,11 +16,10 @@
       </van-cell>
       <div class="btn-wrap">
         <nuxt-link tag="button" :to="{path:'/myself/kucun/kucunDetail',query:{UserID,UserGoodsID:item.UserGoodsID}}">查看详情</nuxt-link>
-        <nuxt-link
-          tag="button"
-          :to="{path:'/myself/daikuan/shenqingdaikuan',query:{UserID,UserGoodsID:item.UserGoodsID}}"
+        <button
+          @click="goDebt(item.UserGoodsID)"
           style="background:#fff;color:#000"
-        >抵押贷款</nuxt-link>
+        >抵押贷款</button>
       </div>
     </van-cell-group>
     <ul class="base-fun-wrap">
@@ -50,9 +49,6 @@ import storage from "~/api/storage.js";
 
 export default {
   async fetch() {},
-  filters: {
-    
-  },
   async asyncData({ query, store }) {
     let ayData = {
       UserID: query.UserID
@@ -73,17 +69,49 @@ export default {
 
     return ayData;
   },
-  methods: {},
+  methods: {
+    goDebt(UserGoodsID){
+      switch(this.userInfo.UserType){
+        case 1:
+        // 仓储用户
+          this.$dialog.confirm({
+            title:'提醒',
+            message:'申请贷款后，将不能成为出借人！'
+          })
+            .then(()=>{
+              this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
+            })
+            .catch(()=>{
+
+            })
+          break;
+        case 2:
+        // 出借用户
+          this.$alert('出借用户，不能使用贷款服务！')
+          break;
+        case 3:
+          // 贷款用户
+           this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
+
+      }
+      // if (this.userInfo.UserType) {
+        
+      // }
+    }
+  },
   data() {
     return {
       //   active: 2
+      userInfo:{}
     };
   },
   head: {
     title: "我的库存"
   },
   components: {},
-  mounted() {}
+  mounted() {
+    this.userInfo = JSON.parse(storage.get('userInfo'))
+  }
 };
 </script>
 

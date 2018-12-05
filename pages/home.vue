@@ -106,7 +106,7 @@ export default {
     goDaiKuan() {
       if (this.userInfo.UserType >= 2) {
         this.$router.push({
-          path: "/myself/wodedaikuan",
+          path: "/myself/daikuan",
           query: { UserID: this.$route.query.UserID }
         });
       }else{

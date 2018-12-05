@@ -4,79 +4,102 @@
     <div class="content">
       <van-tabs v-model="active">
         <van-tab title="我的放款">
-          <ul class="fang-wrap">
+          <ul class="fang-wrap" v-if="passList.length">
             <li v-for="(item,index) in passList" :key="index">
               <p class="time">放款时间：{{item.FDay}}天</p>
               <p class="person">放款人：{{item.FName}}</p>
               <p class="fang">放款金额：{{item.FMoney}}</p>
               <div class="prevMoney">
                 <p>预计收益金额</p>
-                <p class="money">￥<span>{{item.FMoney*1.05}}</span></p>
+                <p class="money">￥
+                  <span>{{item.FMoney*1.05}}</span>
+                </p>
               </div>
             </li>
           </ul>
+          <wu-view v-else></wu-view>
         </van-tab>
         <van-tab title="审核中">
-          <ul class="fang-wrap">
+          <ul class="fang-wrap" v-if="applingList.length">
             <li v-for="(item,index) in applingList" :key="index">
               <p class="time">放款时间：{{item.FDay}}天</p>
               <p class="person">放款人：{{item.FName}}</p>
               <p class="fang">放款金额：{{item.FMoney}}</p>
               <div class="prevMoney">
                 <p>预计收益金额</p>
-                <p class="money">￥<span>{{item.FMoney*1.05}}</span></p>
+                <p class="money">￥
+                  <span>{{item.FMoney*1.05}}</span>
+                </p>
               </div>
             </li>
           </ul>
+          <wu-view v-else/>
         </van-tab>
       </van-tabs>
-      <van-button size="large" style="" class="submit" @click="goEdit">申请放款</van-button>
-
+      <van-button size="large" style class="submit" @click="goEdit">申请放款</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import {getFangkuan} from "~/api/getData.js";
+import { getFangkuan } from "~/api/getData.js";
+import Wu from '~/components/wu.vue'
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
 export default {
   methods: {
-    goEdit(){
-      this.$router.push({path:'/myself/wodefankuan/shenqingfankuan',query:{UserID:this.$route.query.UserID}})
+    goEdit() {
+      this.$router.push({
+        path: "/myself/wodefankuan/shenqingfankuan",
+        query: { UserID: this.$route.query.UserID }
+      });
     }
   },
   data() {
     return {
-      active:1
+      active: 1
     };
   },
-  head:{
-    title:'中良科技'
+  head: {
+    title: "中良科技"
   },
   components: {
+    'wu-view':Wu
   },
-  async asyncData({query}) {
-    let ayData={};
+  async asyncData({ query }) {
+    let ayData = {};
     // 审核中
-    await getFangkuan({Data:{UserID:query.UserID,IsChecked:0}}).then(res=>{if(res.data.StatusCode==200){ayData.applingList = res.data.Data}});
+    await getFangkuan({ Data: { UserID: query.UserID, IsChecked: 0 } }).then(
+      res => {
+        if (res.data.StatusCode == 200) {
+          ayData.applingList = res.data.Data;
+        }
+      }
+    );
     // 审核通过
-    await getFangkuan({Data:{UserID:query.UserID,IsChecked:1}}).then(res=>{if(res.data.StatusCode==200){ayData.passList = res.data.Data}});
-    return ayData
+    await getFangkuan({ Data: { UserID: query.UserID, IsChecked: 1 } }).then(
+      res => {
+        if (res.data.StatusCode == 200) {
+          ayData.passList = res.data.Data;
+        }
+      }
+    );
+    return ayData;
   }
 };
 </script>
 <style lang='stylus' scoped>
 .submit
-  color #fff;
+  color #fff
   background #003366
   font-weight bold
   position fixed
-  bottom 0;
-  left 0;
+  bottom 0
+  left 0
 .content
   background #f2f2f2
+  height 'calc(100vh - %s)' % 100px
 .fang-wrap
   min-height 'calc(100vh - %s)' % 84px
   padding 11px 0 0
@@ -106,8 +129,6 @@ export default {
         text-align right
       .money
         color #005AB4
-        span 
+        span
           font-size 18px
-
-  
 </style>

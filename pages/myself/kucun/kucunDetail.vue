@@ -46,7 +46,7 @@
         <van-cell title="预计租金" :value="computPrice/2" />
       </van-cell-group>
       <ul class="base-fun-wrap">
-        <nuxt-link tag="li" :to="{path:'/myself/kucun/putOut',query:{UserGoodsID:$route.query.UserGoodsID}}">
+        <nuxt-link tag="li" :to="{path:'/myself/kucun/putIn/add',query:{UserID:$route.query.UserID,UserGoodsID:$route.query.UserGoodsID}}">
           <i class="iconfont icon-zhuanru" style="color:#8A8A8A"></i>
           <span>入库</span>
         </nuxt-link>

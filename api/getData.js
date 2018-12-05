@@ -111,7 +111,7 @@ export const postZuLin = (data,headers={}) => fetch('/api/Post/zuping',data, "PO
 export const getZuLinDt = (data,headers={}) => fetch('/api/Get/zupingDt',data, "POST",headers);
 
 /**
- * 申请出库
+ * 申请出入库
 
  */
 
@@ -212,4 +212,10 @@ export const getMoneyRecord = (data,headers={}) => fetch('/api/Get/UserMoney',da
  */
 
 export const getKuCunRecord = (data,headers={}) => fetch('/api/Get/chuku',data, "POST",headers);
+
+/**
+ * 获取贷款列表
+ */
+
+export const getDaiKuanAll = (data,headers={}) => fetch('/api/Get/daikuanAll',data, "POST",headers);
 

@@ -30,8 +30,8 @@
       </div>
       <div class="section2">
         <!-- 贷款用户 -->
-        <van-cell-group  v-if="userinfo.UserType>=3">
-          <van-cell title="贷款" is-link :to="{path:'/myself/wodedaikuan',query:{UserID:userinfo.UserID}}">
+        <van-cell-group  v-if="userinfo.UserType==3">
+          <van-cell title="贷款" is-link :to="{path:'/myself/daikuan',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-daikuan van-cell__left-icon" style="color:#87A7D6"></i>
             </template>
@@ -43,7 +43,7 @@
           </van-cell>
         </van-cell-group>
         <!-- 出借用户 -->
-        <van-cell-group  v-if="userinfo.UserType>=2">
+        <van-cell-group  v-if="userinfo.UserType==2">
           <van-cell title="放款" is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-fukuanjine van-cell__left-icon" style="color:#3F81C1"></i>
@@ -180,7 +180,7 @@ export default {
   components: {},
   mounted() {
     storage.set("UserID", this.$route.query.UserID);
-    storage.set("userInfo", this.userinfo);
+    storage.set("userInfo", JSON.stringify(this.userinfo));
   }
 };
 </script>

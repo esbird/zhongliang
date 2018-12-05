@@ -30,7 +30,7 @@
           </li>
           <!-- <li ><input type="file" name="" id=""></li> -->
           <li class="add">
-            <van-uploader :after-read="uploadFile" multiple >
+            <van-uploader :after-read="uploadFile" multiple  style="width:100%;height:100%">
               <!-- <van-icon name="photograph" /> -->
             </van-uploader>
           </li>
@@ -56,7 +56,6 @@ export default {
   data() {
     return {
       picArr: [],
-
       showList: [false],
       selectValueList:[],
       selectItemList:[],
@@ -65,6 +64,7 @@ export default {
   },
   async asyncData({ query }) {
     let ayData = {
+      sortSelectIndex:0,
       sortList:[],
       dataInfo: {
         FType: "",
@@ -89,46 +89,48 @@ export default {
   methods: {
     onCancel(val,idx,sortLv){
       // console.log(sortLv)
-      this.$set(this.showList,sortLv,false)
+      this.$set(this.showList,this.sortSelectIndex,false)
     },
     async onConfirm(val,idx,sortLv){
-      // console.log(val,idx,sortLv);
+      console.log(val,idx,this.sortSelectIndex);
       //如果选中的与原来的相同
-      if (this.selectValueList[sortLv] == val.ItemName) {
+      if (this.selectValueList[this.sortSelectIndex] == val.ItemName) {
         // 相同
-        this.$set(this.showList,sortLv,false)
+        this.$set(this.showList,this.sortSelectIndex,false)
       }else{
         // 不相同
-        this.$set(this.selectValueList,sortLv,val.ItemName);
-        this.$set(this.selectItemList,sortLv, val);
+        this.$set(this.selectValueList,this.sortSelectIndex,val.ItemName);
+        this.$set(this.selectItemList,this.sortSelectIndex, val);
         // 清除选项列表
-        let sortList = this.sortList.slice(0,sortLv+1);
+        let sortList = this.sortList.slice(0,this.sortSelectIndex+1);
         this.sortList = sortList;
         // 清除选项值
-        let selectValueList = this.selectValueList.slice(0,sortLv+1);
+        let selectValueList = this.selectValueList.slice(0,this.sortSelectIndex+1);
         this.selectValueList = selectValueList;
-        let selectItemList = this.selectItemList.slice(0,sortLv+1);
+        let selectItemList = this.selectItemList.slice(0,this.sortSelectIndex+1);
         this.selectItemList = selectItemList;
         // 通过ID查子分类
         await getSortList({Data:{ItemParentID:val.ID}})
           .then(res=>{
             if(res.data.StatusCode==200){
+              
               if(res.data.Data.length==0){
                 return res
               }else{
-                this.$set(this.sortList,sortLv+1,res.data.Data)
+                this.$set(this.sortList,this.sortSelectIndex+1,res.data.Data)
                 return res;
               }
             }
           })
         // this.
-        this.$set(this.showList,sortLv,false)
+        this.$set(this.showList,this.sortSelectIndex,false)
 
       }
 
 
     },
     showSort(index){
+      this.sortSelectIndex = index;//当前选择的分类级别
       this.$set(this.showList,index,true)
     },
     async submit() {

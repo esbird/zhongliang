@@ -4,7 +4,7 @@
     <div class="content">
       <ul>
         <li v-for="(item,index) in zuLingList" :key="index">
-          <p class="order_num" style="color:#949494">{{item.Type?'出库':'入库'}}订单编号：{{item.FOrderNumber}}</p>
+          <p class="order_num" style="color:#949494">{{item.Type?'入库':'出库'}}订单编号：{{item.FOrderNumber}}</p>
           <p v-for="(ite,idx) in item.Entry" :key="idx">
             <span>{{ite.FGoodsName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
             <span>{{ite.xinghaoName}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -17,7 +17,11 @@
             <span>规格</span>&nbsp;&nbsp;&nbsp;&nbsp;
             <span>数量</span>
           </p> -->
-          <p class="port-bottom"><span class="name">预留电话：{{item.UserPhone}}</span><span class="time">{{parseInt(item.FOrderNumber) | dateFormat('YYYY-MM-DD')}}</span></p>
+          <p class="port-bottom">
+            <!-- <span class="name">预留电话：{{item.UserPhone}}</span> -->
+            <span class="name">联系人：{{item.FName}}</span>
+            <span class="time">{{parseInt(item.FOrderNumber) | dateFormat('YYYY-MM-DD')}}</span>
+          </p>
           <span class="van-sku-row__item statue">{{item.IsChecked | judgeState}}</span>
         </li>
       </ul>

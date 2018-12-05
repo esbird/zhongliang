@@ -114,6 +114,15 @@ export default {
       this.postData.FOrderNumber = (new Date()).valueOf();
       this.postData.Type = 0;
       // 判断数量是否超出限量
+      for (let index = 0; index < this.result.length; index++) {
+        
+        this.result[index];
+        if (this.dataInfo.Entry[this.result[index]].FNumber1 > this.dataInfo.Entry[this.result[index]].FNumber ) {
+          this.$alert('出库数量超出库存！');
+          return;
+        }
+        
+      }
       this.result.forEach(element => {
         this.dataInfo.Entry[element].FNumber = this.dataInfo.Entry[element].FNumber1;
         this.postData.Entry.push(this.dataInfo.Entry[element]);
@@ -124,8 +133,9 @@ export default {
       })
         .then(res=>{
           if (res.data.StatusCode==200) {
-            this.$alert('出库提交成功，等待审核')
-            this.$router.back();
+            this.$alert('出库提交成功，等待审核').then(()=>{
+              this.$router.back();
+            })
           }else{
             console.log(res.data.Data);
           }

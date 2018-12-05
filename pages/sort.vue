@@ -23,11 +23,11 @@
           <ul>
             <li v-for="(item,index) in goodsSort" :key="item.ID" :class="{active:sortActive==index}" @click="selectSort(index,item.ID)">
               {{item.ItemName}}
-              
               <ul v-show="sortActive==index">
                 <li v-for="(ite) in item.child" :key="ite.ID" :class="{'active-item':activeItem==ite.ID}" @click.prevent.stop="selectSort1(ite.ID)">{{ite.ItemName}}</li>
               </ul>
             </li>
+            <li :class="{active:sortActive=='daikuan'}" @click="selectDaikuan">贷款</li>
           </ul>
 
         </div>
@@ -36,9 +36,9 @@
             <li v-for="(item,index) in goodsList" :key="index" @click="goView(item.FInterID)">
               <img v-lazy="item.WebSite" alt="">
               <div class="text">
-                <h2>产品标题</h2>
-                <p class="weight">重量：2000顿</p>
-                <p class="price">￥<span>39999</span></p>
+                <h2>{{item.FName}}</h2>
+                <p class="weight">重量：{{item.FNumber}}{{item.FUnit}}</p>
+                <p class="price">￥<span>{{item.price}}</span></p>
               </div>
             </li>
           </ul>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getSortList, getGuaPai, getPic } from "~/api/getData.js";
+import { getSortList, getGuaPai, getPic,getDaiKuanAll } from "~/api/getData.js";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -83,6 +83,12 @@ export default {
     title: "分类"
   },
   methods: {
+    // 贷款
+    selectDaikuan(){
+      this.sortActive = 'daikuan';
+      this.goodsList = this.daiKuanList;
+    },
+    // 搜索
     onSearch(){
       
     },
@@ -146,6 +152,15 @@ export default {
   },
   async asyncData() {
     let ayData = {};
+    // 获取贷款列表
+    await getDaiKuanAll()
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.daiKuanList = res.data.Data;
+        }else{
+          console.log('getDaiKuanAll',res.data.Data)
+        }
+      })
     await getSortList({
       Data: {
         ItemParentID: 10

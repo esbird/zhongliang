@@ -4,7 +4,7 @@
     <div class="content">
       <van-tabs v-model="active">
         <van-tab title="我的贷款">
-          <ul class="fang-wrap">
+          <ul class="fang-wrap" v-if="stateList1.length">
             <li v-for="(item,index) in stateList1" :key="index">
               <p class="product"><span>联系号码：{{item.FPhone}}</span>  <van-button size="mini" type="primary" round>{{item.IsChecked | judgeState}}</van-button></p>
               <p class="">贷款天数:{{item.FDays}}</p>
@@ -15,9 +15,11 @@
               </div>
             </li>
           </ul>
+          <wu-view v-else />
+
         </van-tab>
         <van-tab title="审核中">
-          <ul class="fang-wrap">
+          <ul class="fang-wrap" v-if="stateList2.length">
             <li v-for="(item,index) in stateList2" :key="index">
               <p class="product"><span>联系号码：{{item.FPhone}}</span><van-button size="mini" type="primary" round >{{item.IsChecked | judgeState}}</van-button></p>
               <p class="">贷款天数:{{item.FDays}}</p>
@@ -28,6 +30,7 @@
               </div>
             </li>
           </ul>
+          <wu-view  v-else />
         </van-tab>
       </van-tabs>
       <van-button size="large" style="" class="submit" @click="goEdit">申请贷款</van-button>
@@ -38,6 +41,7 @@
 
 <script>
 import {getDaikuan,getUserInfo} from "~/api/getData.js";
+import Wu from '~/components/wu.vue'
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -46,7 +50,7 @@ export default {
     goEdit(){
       if(this.userInfo.FMoney){
 
-        this.$router.push({path:'/myself/wodedaikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
+        this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
       }else{
         // 需要有货物仓储才可使用贷款服务
         this.$dialog.alert({
@@ -67,6 +71,7 @@ export default {
     title:'中良科技'
   },
   components: {
+    'wu-view':Wu
   },
   async asyncData({query}) {
     let ayData={}
