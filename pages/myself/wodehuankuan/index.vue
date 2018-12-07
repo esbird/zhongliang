@@ -6,7 +6,7 @@
         <div class="port">
           <p>贷款金额(元)</p>
           <h2>{{FMoney}}</h2>
-          <button @click='notif'>还本金</button>
+          <button @click="notif">还本金</button>
         </div>
 
         <div class="port">
@@ -26,18 +26,27 @@
             label="金额"
             placeholder="请输入金额"
           />
-        </van-dialog> -->
+        </van-dialog>-->
       </div>
-      <!-- <div class="section2">
-        <p class="title"><span></span></p>
+      <div class="section2">
+        <p class="title">
+          <span></span>
+        </p>
         <ul>
-          <template v-if="detaInfo.length">
-            <li v-for="(item,index) in detaInfo" :key="index"><span class="month">1月</span><p><span class="money">1999.00</span><span class="state">已还款</span></p></li>
-            
+          <template v-if="fenqiArr.length">
+            <li v-for="(item,index) in fenqiArr" :key="index">
+              <p style="" class="month"><span >{{item.EndDate | dateFormat()}}</span>
+              <!-- <span ></span> -->
+              </p>
+              <p>
+                <span class="money">{{'本金:'+item.FMoney+'  利息:'+item.lixi}}</span>
+                <span class="state">{{item.status?'待还款':'已还款'}}</span>
+              </p>
+            </li>
           </template>
-          <li v-else>暂无记录</li>
+          <li v-else style="display:block;text-align:center">暂无记录</li>
         </ul>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -69,7 +78,7 @@
         width 113px
         height 35px
         border-radius 7.5px
-        box-shadow 2.5px 2.5px 1.5px #000;
+        box-shadow 2.5px 2.5px 1.5px #000
         background #0066CC
         color #fff
         border none
@@ -86,46 +95,44 @@
         text-align center
         &~li
           border-top 1px solid #D7D7D7
-        .month
-          display block
-          width 65px
+        p.month
+          display flex
+          flex 0.5
           border-right 1px solid #D7D7D7
+          flex-direction column
           align-items center
-          justify-content center
-          text-align center
-          height 100%
+          justify-content space-around
+          // text-align center
+          height 43px
+          span
+            display block
+            line-height 1
         p
           flex 1
           display flex
           justify-content space-between
           padding 0 15px
           color #797979
-
     .title
       font-size 16px
-
       height 43px
       display flex
       align-items center
       justify-content center
       padding 0 11px
       background #F2F2F2
-
-
-
 </style>
 
 <script>
-import { getHuankuan,postHuankuan } from "~/api/getData.js";
-import {Tel} from '~/config/env.js'
+import { getHuankuan, postHuankuan, getFenQiByID } from "~/api/getData.js";
+import { Tel } from "~/config/env.js";
 import storage from "~/api/storage.js";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
 export default {
   methods: {
-    async onConfirm(){
-      
+    async onConfirm() {
       // if(!this.postData.FMoney || this.postData.FMoney>this.$route.query.lixi){
       //   this.$dialog.alert({
       //     title:'提醒',
@@ -154,68 +161,92 @@ export default {
       //       }).then(()=>{
       //           //点击回调
       //       })
-
       //   }
       // })
-
     },
-    rechargeLixi(){
+    rechargeLixi() {
       // this.show = true;
-      this.$dialog.alert({
-        title:'提醒',
-        message:`还利息请联系客服！${Tel}`
-      }).then(()=>{
+      this.$dialog
+        .alert({
+          title: "提醒",
+          message: `还利息请联系客服！${Tel}`
+        })
+        .then(() => {
           //点击回调
-      })
+        });
     },
-    notif(){
-      this.$dialog.alert({
-        title:'提醒',
-        message:`还利息请联系客服！${Tel}`
-      }).then(()=>{
+    notif() {
+      this.$dialog
+        .alert({
+          title: "提醒",
+          message: `还利息请联系客服！${Tel}`
+        })
+        .then(() => {
           //点击回调
-      })
+        });
     }
   },
   data() {
     return {
       show: false,
-      postData:{
-        "FInterID": "",  //我要贷款的那条ID
-        "UserID": "",
-        "FMoney": ""
-
+      postData: {
+        FInterID: "", //我要贷款的那条ID
+        UserID: "",
+        FMoney: ""
       }
     };
   },
-  async asyncData({query}){
+  async asyncData({ query }) {
     let ayData = {
-      FMoney:query.FMoney,
-      lixi:query.lixi,
-      EndDay:query.EndDay
+      FMoney: query.FMoney,
+      lixi: query.lixi,
+      EndDay: query.EndDay
     };
-    let overEnd=false;
-    console.log('EndDay',dayjs(ayData.EndDay).endOf('day').format('YYYY-MM-DD'));
-    console.log('now',dayjs().endOf('day').format('YYYY-MM-DD'));
-    
-    dayjs(ayData.EndDay)
+    let overEnd = false;
+    console.log(
+      "EndDay",
+      dayjs(ayData.EndDay)
+        .endOf("day")
+        .format("YYYY-MM-DD")
+    );
+    console.log(
+      "now",
+      dayjs()
+        .endOf("day")
+        .format("YYYY-MM-DD")
+    );
 
-    await getHuankuan({Data:{FInterID:query.FInterID}}).then(res=>{
+    dayjs(ayData.EndDay);
+
+    await getHuankuan({ Data: { FInterID: query.FInterID } }).then(res => {
       // console.log(res)
-      if (res.data.StatusCode==200) {
-        ayData.detaInfo=res.data.Data;
+      if (res.data.StatusCode == 200) {
+        ayData.detaInfo = res.data.Data;
       }
     });
-    return ayData
+    // 获取分期记录
+    await getFenQiByID({
+      Data: {
+        FInterID: query.FInterID
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.fenqiArr = res.data.Data;
+      } else {
+        console.log("getFenQiByID", res.data.Data);
+      }
+    });
+
+    return ayData;
   },
   mounted() {
-    this.postData.FInterID=this.$route.query.FInterID;
-    this.postData.UserID = storage.get('UserID');
+    this.postData.FInterID = this.$route.query.FInterID;
+    this.postData.UserID = storage.get("UserID");
   },
-  
+
   head: {
     title: "中良科技"
   },
-  components: {},
+  components: {}
 };
 </script>

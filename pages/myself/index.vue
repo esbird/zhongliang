@@ -22,7 +22,7 @@
           <div class="port-bottom">
             <div class="asset">
               <p>总资产(元)</p>
-              <p class="count">2000</p>
+              <p class="count">{{userinfo.UserMoney}}</p>
             </div>
             <nuxt-link tag="span" :to="{path:'/myself/asset',query:{UserID:userinfo.UserID}}" style="display:flex;align-items:center"><i class="iconfont icon-yinxingqia"></i><van-icon name="arrow" /></nuxt-link>
           </div>
@@ -49,7 +49,7 @@
               <i class="iconfont icon-fukuanjine van-cell__left-icon" style="color:#3F81C1"></i>
             </template>
           </van-cell>
-          <van-cell title="收款" is-link :to="{path:'/myself/wodehuankuan/huankuanjilu',query:{UserID:userinfo.UserID}}">
+          <van-cell title="收款" is-link :to="{path:'/myself/shoukuan',query:{UserID:userinfo.UserID}}">
             <template slot="icon">
               <i class="iconfont icon-huankuankuai van-cell__left-icon" style="color:#E16531"></i>
             </template>
@@ -59,73 +59,27 @@
         <van-cell-group  v-if="userinfo.UserType>=1">
           <van-cell title="库管信息" is-link :to="{path:'/myself/kucun',query:{UserID:userinfo.UserID}}" class="factory">
           </van-cell>
-          <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory-wrap">
+          <!-- <van-cell is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}" class="factory-wrap">
             <template slot="title">
               <p style="font-weight:500">场地编号</p>
               <p class="time">开始时间:</p>
               <p class="time">结束时间:</p>
             </template>
             <span style="color:#003366">剩余360天</span>
-          </van-cell>
+          </van-cell> -->
         </van-cell-group>
         <ul class="base-fun-wrap">
           <nuxt-link tag="li" :to="{path:'/myself/wodeguapai',query:{UserID:userinfo.UserID}}">
             <i class="iconfont icon-guapai-copy" style="color:#17ABE3"></i>
             <span>挂牌</span>
           </nuxt-link>
-          <li>
+          <li @click="call">
             <i class="iconfont icon-kefu" style="color:#1AABA8"></i>
             <span>联系客服</span>
           </li>
           <li></li>
         </ul>
 
-        <!-- <van-cell-group>
-          <van-cell title="我要挂牌" is-link :to="{path:'/myself/woyaoguapai',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-shangjiazuhe van-cell__left-icon" style="color:#003366"></i>
-            </template>
-          </van-cell>
-          <van-cell title="我的挂牌" is-link :to="{path:'/myself/wodeguapai',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-kucun van-cell__left-icon" style="color:#87C38F"></i>
-            </template>
-          </van-cell>
-          <van-cell title="我要放款" is-link :to="{path:'/myself/wodefankuan',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-fukuanjine van-cell__left-icon" style="color:#3F81C1"></i>
-            </template>
-          </van-cell>
-        </van-cell-group> -->
-        <!-- <van-cell-group v-if="userinfo.UserType >= 1">
-          <van-cell title="场地租赁" is-link :to="{path:'/myself/changdizupin',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-changdizulin van-cell__left-icon" style="color:#EEB173"></i>
-            </template>
-          </van-cell>
-          <van-cell title="我要出库" is-link :to="{path:'/myself/woyaochuku',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-chuku van-cell__left-icon" style="color:#079BEF"></i>
-            </template>
-          </van-cell>
-          <van-cell title="出库记录" is-link :to="{path:'/myself/chukujilu',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-jilu01 van-cell__left-icon" style="color:#0B988F"></i>
-            </template>
-          </van-cell>
-          <van-cell title="我的库存" is-link :to="{path:'/myself/wodekucun',query:{UserID:userinfo.UserID}}">
-            <template slot="icon">
-              <i class="iconfont icon-round_depot_fill van-cell__left-icon" style="color:#E98F36"></i>
-            </template>
-          </van-cell>
-        </van-cell-group> -->
-        <!-- <van-cell-group v-if="userinfo.UserType!=2">
-          <van-cell title="会员等级申请" is-link :to="{path:'/myself/huiyuanshenji',query:{UserID:userinfo.UserID,level:userinfo.UserType}}">
-            <template slot="icon">
-              <i class="iconfont icon-huiyuan van-cell__left-icon" style="color:#E98F36"></i>
-            </template>
-          </van-cell>
-        </van-cell-group> -->
       </div>
     </div>
     <van-tabbar v-model="active">
@@ -140,6 +94,7 @@
 </template>
 
 <script>
+import { Tel } from "~/config/env.js";
 import { getUserInfo } from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
@@ -168,7 +123,23 @@ export default {
     });
     return ayData;
   },
-  methods: {},
+  methods: {
+    call(){
+      this.$dialog
+          .confirm({
+            title: "提醒",
+            message: `还利息请联系客服！${Tel}`
+          })
+          .then(() => {
+            //点击回调
+            location.href=`tel:${Tel}`
+          })
+          .catch(()=>{
+
+          })
+
+    },
+  },
   data() {
     return {
       active: 2

@@ -8,37 +8,55 @@
             <img class="pic" v-lazy="item.WebSite"/>
           </div>
         </van-swipe-item>
-      </van-swipe> -->
+      </van-swipe>-->
       <!-- <div class="sort-bar"><span>价格</span></div> -->
-      <van-search
-        v-model="searchVal"
-        placeholder="请输入搜索关键词"
-        show-action
-        @search="onSearch"
-      >
-  <div slot="action" @click="onSearch">搜索</div>
-</van-search>
+      <van-search v-model="searchVal" placeholder="请输入搜索关键词" show-action @search="onSearch">
+        <div slot="action" @click="onSearch">搜索</div>
+      </van-search>
       <div class="goods-wrap">
         <div class="port-left">
           <ul>
-            <li v-for="(item,index) in goodsSort" :key="item.ID" :class="{active:sortActive==index}" @click="selectSort(index,item.ID)">
+            <li
+              v-for="(item,index) in goodsSort"
+              :key="item.ID"
+              :class="{active:sortActive==index}"
+              @click="selectSort(index,item.ID)"
+            >
               {{item.ItemName}}
               <ul v-show="sortActive==index">
-                <li v-for="(ite) in item.child" :key="ite.ID" :class="{'active-item':activeItem==ite.ID}" @click.prevent.stop="selectSort1(ite.ID)">{{ite.ItemName}}</li>
+                <li
+                  v-for="(ite) in item.child"
+                  :key="ite.ID"
+                  :class="{'active-item':activeItem==ite.ID}"
+                  @click.prevent.stop="selectSort1(ite.ID)"
+                >{{ite.ItemName}}</li>
               </ul>
             </li>
             <li :class="{active:sortActive=='daikuan'}" @click="selectDaikuan">贷款</li>
           </ul>
-
         </div>
         <div class="port-right">
-          <ul>
+          <ul class="daikuan-wrap" v-if="sortActive=='daikuan'">
+            <li @click="goDetail(item.FInterID)"   v-for="(item,index) in daiKuanList" :key="index">
+              <h2>{{item.RealName}}</h2>
+              <p  style="display:flex;align-items:center" class="star"><van-rate readonly :size="14" v-model="starCount" /><span style="color:#94A5C5;margin-left:3px">{{starCount}}</span></p>
+              <p style="color:#94A5C5;margin-left:3px">借款金额</p>
+              <p class="money">￥<span>{{item.FMoney}}</span></p>
+              <div class="extend">
+                <p class="lixi">18.1%&nbsp;1.5%</p>
+                <p class="fDay">{{item.FDays}}天</p>
+              </div>
+            </li>
+          </ul>
+          <ul v-else class="sort-wrap">
             <li v-for="(item,index) in goodsList" :key="index" @click="goView(item.FInterID)">
-              <img v-lazy="item.WebSite" alt="">
+              <img v-lazy="item.WebSite" alt>
               <div class="text">
                 <h2>{{item.FName}}</h2>
                 <p class="weight">重量：{{item.FNumber}}{{item.FUnit}}</p>
-                <p class="price">￥<span>{{item.price}}</span></p>
+                <p class="price">￥
+                  <span>{{item.price}}</span>
+                </p>
               </div>
             </li>
           </ul>
@@ -57,13 +75,20 @@
 </template>
 
 <script>
-import { getSortList, getGuaPai, getPic,getDaiKuanAll } from "~/api/getData.js";
+import {
+  getSortList,
+  getGuaPai,
+  getPic,
+  getDaiKuanAll,
+  getUserInfo
+} from "~/api/getData.js";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
 export default {
   data() {
     return {
+      starCount:5,
       searchVal: "",
       active: 1,
       activeItem: 0,
@@ -83,20 +108,41 @@ export default {
     title: "分类"
   },
   methods: {
+    // 贷款详情页面
+    goDetail(FInterID){
+      switch(this.userInfo.UserType){
+        // 普通用户 
+        case 0:
+          break;
+        //仓储用户
+        case 1:
+          break;
+        //出借用户
+        case 2:
+          break;
+        //贷款用户
+        case 3:
+          this.$router.push({path:'/daikuanDetail',query:{UserID:this.$route.query.UserID,FInterID:FInterID}})
+          break;
+        default:
+          break;
+        
+      }
+    },
     // 贷款
-    selectDaikuan(){
-      this.sortActive = 'daikuan';
-      this.goodsList = this.daiKuanList;
+    selectDaikuan() {
+      this.sortActive = "daikuan";
+      // this.goodsList = this.daiKuanList;
     },
     // 搜索
-    onSearch(){
-      
-    },
+    onSearch() {},
     goView(FInterID) {
       this.$router.push({ path: "/goodsDetail", query: { FInterID } });
     },
     async selectSort(index, ID) {
       this.loading = this.$loading();
+      ID = this.goodsSort[index].child[0].ID;
+      this.activeItem = ID;
       // 获取挂牌列表
       await getGuaPai({
         Data: {
@@ -106,9 +152,9 @@ export default {
       }).then(res => {
         this.loading.clear();
         if (res.data.StatusCode == 200) {
-          if (res.data.Data.length) {
+          // if (res.data.Data.length) {
+          //   }
             this.goodsList = res.data.Data;
-          }
         } else {
           this.$dialog
             .alert({
@@ -150,17 +196,26 @@ export default {
       this.activeItem = ID;
     }
   },
-  async asyncData() {
+  async asyncData({query}) {
     let ayData = {};
-    // 获取贷款列表
-    await getDaiKuanAll()
+    await getUserInfo({
+      Data:{
+        UserID:query.UserID
+    }})
       .then(res=>{
         if (res.data.StatusCode==200) {
-          ayData.daiKuanList = res.data.Data;
-        }else{
-          console.log('getDaiKuanAll',res.data.Data)
+          ayData.userInfo = res.data.Data;
         }
       })
+      
+    // 获取贷款列表
+    await getDaiKuanAll().then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.daiKuanList = res.data.Data;
+      } else {
+        console.log("getDaiKuanAll", res.data.Data);
+      }
+    });
     await getSortList({
       Data: {
         ItemParentID: 10

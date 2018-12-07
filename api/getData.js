@@ -219,3 +219,33 @@ export const getKuCunRecord = (data,headers={}) => fetch('/api/Get/chuku',data, 
 
 export const getDaiKuanAll = (data,headers={}) => fetch('/api/Get/daikuanAll',data, "POST",headers);
 
+/**
+ * 获取贷款单条信息
+ */
+
+export const getDaiKuanSingle = (data,headers={}) => fetch('/api/Get/daikuanByID',data, "POST",headers);
+
+/**
+ * 升级会员
+ */
+
+export const postLevelCheck = (data,headers={}) => fetch('/api/Post/UserLevelCheck',data, "POST",headers);
+
+/**
+ * 获取审核流程
+ */
+
+export const getCheckTime = (data,headers={}) => fetch('/api/Get/ChcekTime',data, "POST",headers);
+
+/**
+ * 获取分期记录
+ */
+
+export const getFenQiByID = (data,headers={}) => fetch('/api/Get/FenQiByID',data, "POST",headers);
+
+/**
+ * 获取回款记录
+ */
+
+export const getfangkuanByID = (data,headers={}) => fetch('/api/Get/fangkuanByID',data, "POST",headers);
+

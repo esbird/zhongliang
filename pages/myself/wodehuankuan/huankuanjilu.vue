@@ -3,7 +3,7 @@
     <header>贷款记录</header>
     <div class="content">
       <ul>
-        <li v-for="(item,index) in stateList1" :key="index" @click="goDetail(item.FInterID,item.FMoney,item.lixi,item.EndDay)">
+        <li v-for="(item,index) in stateList1" v-if="item.FStatus==3" :key="index" @click="goDetail(item.FInterID,item.FMoney,item.lixi,item.EndDay)">
           <div><span>预留卡号:{{item.BankCard}}</span><p class="money">￥<span>{{item.FMoney}}</span></p></div>
           <div><span>贷款天数:{{item.FDays}}</span></div>
           <div><span class="last-count">预留号码:{{item.FPhone}}</span><span class="time">{{item.AddTime | dateFormat('YYYY-MM-DD HH:mm')}}</span> </div>

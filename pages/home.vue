@@ -3,8 +3,8 @@
     <div class="content">
       <van-swipe>
         <van-swipe-item v-for="(item,index) in banner" :key="index">
-          <div class="img-wrap" >
-            <img class="pic" v-lazy="item.WebSite"/>
+          <div class="img-wrap">
+            <img class="pic" v-lazy="item.WebSite">
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -42,11 +42,8 @@
               <li><span>xxxxxx</span><span class="date">10-06</span></li>
             </ul>
           </div>
-        </div> -->
-        <div class="guapai-block">
-          
-          
-        </div>
+        </div>-->
+        <div class="guapai-block"></div>
         <div class="desc-block">
           <h2>公司简介</h2>
           <p>中良科技集团有限公司是中国人民解放军总装部指北针唯一列装生产厂。</p>
@@ -67,7 +64,7 @@
   </div>
 </template>
 <script>
-import { getSortList, getGuaPai, getUserInfo,getPic } from "~/api/getData.js";
+import { getSortList, getGuaPai, getUserInfo, getPic } from "~/api/getData.js";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -89,53 +86,97 @@ export default {
   },
   components: {},
   head() {
-    return{
-
+    return {
       title: "首页"
-    }
+    };
   },
   methods: {
     //跳放款
     goFanKuan() {
-      this.$router.push({
-        path: "/myself/wodefankuan",
-        query: { UserID: this.$route.query.UserID }
-      });
+      switch (this.userInfo.UserType) {
+        case 0:
+          this.$router.push({
+            path: "/renzheng",
+            query: { UserID: this.$route.query.UserID, type: 2 }
+          });
+          break;
+        case 1:
+          this.$router.push({
+            path: "/renzheng",
+            query: { UserID: this.$route.query.UserID, type: 2 }
+          });
+          break;
+        case 2:
+          this.$alert("贷款用户，不能使用放款功能！");
+          break;
+        case 3:
+          this.$router.push({
+            path: "/myself/wodefankuan",
+            query: { UserID: this.$route.query.UserID }
+          });
+          break;
+        default:
+          break;
+      }
     },
     //跳代款
     goDaiKuan() {
-      if (this.userInfo.UserType >= 2) {
-        this.$router.push({
-          path: "/myself/daikuan",
-          query: { UserID: this.$route.query.UserID }
-        });
-      }else{
-        this.$dialog
-          .alert({
-            title: "提醒",
-            message: '请先提升会员等级'
-          })
-          .then(() => {
-            //点击回调
+      switch (this.userInfo.UserType) {
+        case 0:
+          this.$router.push({
+            path: "/renzheng",
+            query: { UserID: this.$route.query.UserID, type: 3 }
           });
+          break;
+        case 1:
+          this.$router.push({
+            path: "/renzheng",
+            query: { UserID: this.$route.query.UserID, type: 3 }
+          });
+          break;
+        case 2:
+          this.$router.push({
+            path: "/myself/daikuan",
+            query: { UserID: this.$route.query.UserID }
+          });
+          break;
+        case 3:
+          this.$alert("放款用户，不能使用贷款功能！");
+          break;
+        default:
+          break;
       }
+
     },
     //跳库存
     goKuCun() {
-      if (this.userInfo.UserType >= 1) {
-        this.$router.push({
-          path: "/myself/wodekucun",
-          query: { UserID: this.$route.query.UserID }
-        });
-      }else{
-        this.$dialog
-          .alert({
-            title: "提醒",
-            message: '请先提升会员等级'
-          })
-          .then(() => {
-            //点击回调
+      switch (this.userInfo.UserType) {
+        case 0:
+          this.$router.push({
+            path: "/renzheng",
+            query: { UserID: this.$route.query.UserID, type: 1 }
           });
+          break;
+        case 1:
+          this.$router.push({
+            path: "/myself/kucun",
+            query: { UserID: this.$route.query.UserID }
+          });
+          break;
+        case 2:
+          this.$router.push({
+            path: "/myself/kucun",
+            query: { UserID: this.$route.query.UserID }
+          });
+          break;
+        case 3:
+          this.$router.push({
+            path: "/myself/kucun",
+            query: { UserID: this.$route.query.UserID }
+          });
+          break;
+        default:
+          break;
       }
     },
     goView(FInterID) {
@@ -151,25 +192,22 @@ export default {
     }).then(res => {
       if (res.data.StatusCode == 200) {
         ayData.userInfo = res.data.Data;
-      }else{
-        console.error( res.data.Data);
-
+      } else {
+        console.error(res.data.Data);
       }
     });
     //获取轮播
     await getPic({
       Data: {
-        PicID: 'lunbo'
+        PicID: "lunbo"
       }
     }).then(res => {
       if (res.data.StatusCode == 200) {
         ayData.banner = res.data.Data;
-      }else{
-        console.error( res.data.Data);
-
+      } else {
+        console.error(res.data.Data);
       }
     });
-
 
     return ayData;
   }

@@ -31,6 +31,7 @@ import {
   Collapse, CollapseItem,
   Sku,
   Checkbox, CheckboxGroup,
+  Rate
 } from 'vant'
 import '~/vant-css/lib/index.css';
 // import 'vant/lib/vant-css/index.css'
@@ -40,6 +41,7 @@ Vue
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(Icon)
+  .use(Rate)
   .use(Step)
   .use(Steps)
   .use(Sku)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>我要放款</header>
+    <header>放款列表</header>
     <div class="content">
       <!-- <van-tabs v-model="active">
         <van-tab title="我的放款">
@@ -24,8 +24,11 @@
         </van-tab>
       </van-tabs>-->
       <ul class="fang-wrap" v-if="applingList.length">
-        <li v-for="(item,index) in applingList" :key="index" >
-          <p class="time"><span>放款时间：{{item.FDays}}天</span> <van-button size="mini" type="primary" round>{{item.IsChecked | judgeState}}</van-button></p>
+        <li v-for="(item,index) in applingList" @click="goList(item.UserFKID)" :key="index" v-if="item.IsChecked==1">
+          <p class="time">
+            <span>放款时间：{{item.FDays}}天</span>
+            <!-- <van-button size="mini" type="primary" round>{{item.IsChecked | judgeState}}</van-button> -->
+          </p>
           <p class="person">接款人：{{item.JieKuanName}}</p>
           <p class="fang">放款金额：{{item.FMoney}}</p>
           <div class="prevMoney">
@@ -57,10 +60,11 @@ export default {
         query: { UserID: this.$route.query.UserID }
       });
     },
-    goTimeLine(){
+    goTimeLine() {},
 
+    goList(UserFKID){
+      this.$router.push({path:'/myself/shoukuan/detail',query:{UserID:this.$route.query.UserID,UserFKID}})
     }
-
   },
   data() {
     return {
@@ -76,13 +80,11 @@ export default {
   async asyncData({ query }) {
     let ayData = {};
     // 审核中
-    await getFangkuan({ Data: { UserID: query.UserID} }).then(
-      res => {
-        if (res.data.StatusCode == 200) {
-          ayData.applingList = res.data.Data;
-        }
+    await getFangkuan({ Data: { UserID: query.UserID } }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.applingList = res.data.Data;
       }
-    );
+    });
     // 审核通过
     // await getFangkuan({ Data: { UserID: query.UserID, IsChecked: 1 } }).then(
     //   res => {
