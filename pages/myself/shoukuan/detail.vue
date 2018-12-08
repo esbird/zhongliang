@@ -3,7 +3,7 @@
     <div class="broad">
       <div class="top">
         <p>预计收益</p>
-        <h2>￥<span>{{list[0].shouyi*list[0].FMoneyBili/100}}</span></h2>
+        <h2>￥<span>{{shouyiSum | toDecimal2(2)}}</span></h2>
       </div>
       <div class="bottom">
         <p>贷款方：{{list[0].RealName}}</p>
@@ -19,8 +19,8 @@
           <h2 :style="{color:item.status?'#003366':'#A1A1A1'}">{{item.status?'已回款':'未回款'}}</h2>
         </div>
         <div class="right">
-          <p><span>应收利息</span><span>¥{{item.shouyi*item.FMoneyBili/100}}</span></p>
-          <p><span>未收本金</span><span>¥{{item.FMoneyBili}}</span></p>
+          <p><span>应收利息</span><span>¥{{item.shouyi*item.FMoneyBili/100 | toDecimal2(2)}}</span></p>
+          <p><span>未收本金</span><span>¥{{item.FMoneyBili  | toDecimal2(2)}}</span></p>
         </div>
       </li>
     </ul>
@@ -39,6 +39,13 @@ export default {
       .then(res=>{
         if (res.data.StatusCode==200) {
           ayData.list = res.data.Data;
+          ayData.shouyiSum=0;
+          ayData.list.forEach(element => {
+            ayData.shouyiSum+=element.shouyi
+          });
+          // console.log(res.data.Data)
+        }else{
+          // console.log(res.data.Data)
         }
       })
     return ayData;

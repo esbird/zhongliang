@@ -33,14 +33,14 @@ var timer;
 export default {
   computed: {
     computedHeader() {
-      switch (this.$route.query.type) {
-        case '1':
+      switch ( parseInt(this.$route.query.type)) {
+        case 1:
           return "申请仓储用户";
           break;
-        case '2':
+        case 2:
           return "申请出借人";
           break;
-        case '3':
+        case 3:
           return "申请贷款用户";
           break;
         default:
@@ -49,14 +49,14 @@ export default {
       }
     },
     computedTip() {
-      switch (this.$route.query.type) {
-        case '1':
+      switch (parseInt(this.$route.query.type) ) {
+        case 1:
           return "";
           break;
-        case '2':
+        case 2:
           return "申请成为借出人后，将不能使用贷款业务";
           break;
-        case '3':
+        case 3:
           return "申请成为贷款用户后，将不能使用放款业务";
           break;
         default:
@@ -88,14 +88,14 @@ export default {
       }
     };
     let dicNum;
-    switch (query.type) {
-      case '1':
+    switch ( parseInt(query.type) ) {
+      case 1:
         dicNum= 50;
         break;
-      case '2':
+      case 2:
         dicNum= 19;
         break;
-      case '3':
+      case 3:
         dicNum= 51;
         break;
       default:

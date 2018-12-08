@@ -61,6 +61,7 @@
       <van-datetime-picker
         v-model="currentDate"
         type="date"
+        :min-date="minDate"
         title="选择出库时间"
         @confirm="onConfirm"
         @cancel="onCancel"
@@ -78,6 +79,7 @@ import SccSku from "~/components/sccSku.vue";
 export default {
   data() {
     return {
+       minDate: new Date(),
       showDate:false,
       currentDate: new Date(),
       postData: {

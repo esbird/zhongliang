@@ -3,25 +3,32 @@
     <!-- 转入 -->
     <div class="in" v-if="$route.params.type==0">
       <p>转入金额</p>
-      <h2>￥<input type="number" class="count" v-model.number="money"></h2>
+      <h2>￥
+        <input type="number" class="count" v-model.number="money">
+      </h2>
       <button class="btn" @click="submit">提交审核</button>
     </div>
     <!-- 转出 -->
     <div class="out" v-if="$route.params.type==1">
       <p>提现金额</p>
-      <h2>￥<input type="number" class="count" v-model.number="money"></h2>
-      <p style="color:#868686">资金金额12412.00 <span style="color:#003366">全部体现</span></p>
+      <h2>￥
+        <input type="number" class="count" v-model.number="money">
+      </h2>
+      <p style="color:#868686">
+        资金金额{{userInfo.UserMoney}}
+        <span style="color:#003366" @click="setAll">全部体现</span>
+      </p>
       <button class="btn" @click="submit">提交审核</button>
     </div>
-    <!-- 账单 --> 
+    <!-- 账单 -->
     <ul class="record-wrap" v-if="$route.params.type==2">
       <li v-for="(item,index) in recordList" :key="index">
         <div class="port-left">
           <p>{{item.FType | userType}}</p>
           <p class="time">12-20 12:20</p>
         </div>
-        <span class="count">{{item.IsChecked?'审核中':'已到账'}}</span>
-        <span class="count">{{item.FType==1 || item.FType==3?'+':'-'+item.FMoney}}</span>
+        <span class="count">{{item.IsChecked?'已到账':'审核中'}}</span>
+        <span class="count">{{(item.FType==1 || item.FType==3?'+':'-')+item.FMoney}}</span>
       </li>
     </ul>
   </div>
@@ -38,21 +45,30 @@ export default {
     let ayData = {
       UserID: query.UserID
     };
-    console.log(params.type)
-    switch (params.type) {
+    // console.log(params.type)
+    switch(parseInt(params.type)){
       // 转入
-      case '0':
-        
+      case 0:
         break;
-    
       // 转出
-      case '1':
-        
+      case 1:
+        await getUserInfo({
+          Data:{
+            UserID:query.UserID
+          }
+        })
+          .then(res=>{
+            if (res.data.StatusCode==200) {
+              ayData.userInfo = res.data.Data;
+            }else{
+              console.log(res.data.Data);
+            }
+          })
         break;
     
       // 账单
-      case '2':
-        console.log(1)
+      case 2:
+        // console.log(1)
         await getMoneyRecord({
           Data:{
             UserID:query.UserID
@@ -102,6 +118,9 @@ export default {
     }
   },
   methods: {
+    setAll(){
+      this.money = this.userInfo.UserMoney;
+    },
     async submit(){
       if (!this.money) {
         this.$alert('请先输入金额！')
@@ -137,7 +156,6 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
-
 #moreIdent
   overflow hidden
   background #EEEDF2
@@ -159,24 +177,24 @@ export default {
         justify-content space-between
         p
           font-size 12px
-        .time 
+        .time
           font-size 9px
       .count
         font-size 18px
         color #003366
-
   .btn
     width 315px
     height 37px
     font-size 16px
     background #003366
     color #fff
-    border none 
+    border none
     border-radius 5px
-    margin 20px auto  0
+    margin 20px auto 0
     display block
-  .in,.out
+  .in, .out
     width 355px
+    overflow hidden
     // height 130px
     background #fff
     border-radius 5px
@@ -198,5 +216,4 @@ export default {
       input
         font-size 24px
         border none
-
 </style>

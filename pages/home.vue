@@ -91,8 +91,8 @@ export default {
     };
   },
   methods: {
-    //跳放款
-    goFanKuan() {
+    //跳贷款
+    goDaiKuan() {
       switch (this.userInfo.UserType) {
         case 0:
           this.$router.push({
@@ -107,7 +107,7 @@ export default {
           });
           break;
         case 2:
-          this.$alert("贷款用户，不能使用放款功能！");
+          this.$alert("放款用户，不能使用贷款功能！");
           break;
         case 3:
           this.$router.push({
@@ -119,8 +119,8 @@ export default {
           break;
       }
     },
-    //跳代款
-    goDaiKuan() {
+    //跳放款
+    goFanKuan() {
       switch (this.userInfo.UserType) {
         case 0:
           this.$router.push({
@@ -141,7 +141,7 @@ export default {
           });
           break;
         case 3:
-          this.$alert("放款用户，不能使用贷款功能！");
+          this.$alert("贷款用户，不能使用放款功能！");
           break;
         default:
           break;

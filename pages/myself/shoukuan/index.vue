@@ -24,10 +24,10 @@
         </van-tab>
       </van-tabs>-->
       <ul class="fang-wrap" v-if="applingList.length">
-        <li v-for="(item,index) in applingList" @click="goList(item.UserFKID)" :key="index" v-if="item.IsChecked==1">
+        <li v-for="(item,index) in applingList" @click="goList(item.UserFKID,item.FStatus)" :key="index" v-if="item.IsChecked==1">
           <p class="time">
             <span>放款时间：{{item.FDays}}天</span>
-            <!-- <van-button size="mini" type="primary" round>{{item.IsChecked | judgeState}}</van-button> -->
+            <van-button size="mini" type="primary" round>{{item.FStatus>2?'放款成功':'等待放款'}}</van-button>
           </p>
           <p class="person">接款人：{{item.JieKuanName}}</p>
           <p class="fang">放款金额：{{item.FMoney}}</p>
@@ -62,8 +62,10 @@ export default {
     },
     goTimeLine() {},
 
-    goList(UserFKID){
-      this.$router.push({path:'/myself/shoukuan/detail',query:{UserID:this.$route.query.UserID,UserFKID}})
+    goList(UserFKID,FStatus){
+      if (FStatus>2) {
+        this.$router.push({path:'/myself/shoukuan/detail',query:{UserID:this.$route.query.UserID,UserFKID}})
+      }
     }
   },
   data() {

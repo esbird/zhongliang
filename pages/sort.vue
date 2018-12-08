@@ -119,10 +119,10 @@ export default {
           break;
         //出借用户
         case 2:
+          this.$router.push({path:'/daikuanDetail',query:{UserID:this.$route.query.UserID,FInterID:FInterID}})
           break;
         //贷款用户
         case 3:
-          this.$router.push({path:'/daikuanDetail',query:{UserID:this.$route.query.UserID,FInterID:FInterID}})
           break;
         default:
           break;

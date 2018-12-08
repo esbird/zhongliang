@@ -3,7 +3,7 @@
     <!-- <header></header> -->
     <div class="my-asset">
       <p>总资产（元）</p>
-      <h1>20000</h1>
+      <h1>{{userInfo.UserMoney}}</h1>
     </div>
     <ul class="base-fun-wrap">
       <nuxt-link tag="li" :to="{path:'/myself/asset/0',query:{UserID}}">
@@ -34,6 +34,18 @@ export default {
     let ayData = {
       UserID: query.UserID
     };
+    await getUserInfo({
+      Data:{
+        UserID: query.UserID
+      }
+    })
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.userInfo = res.data.Data
+        }else{
+          console.log(res.data.Data)
+        }
+      })
     return ayData;
   },
   methods: {},

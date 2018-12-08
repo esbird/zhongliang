@@ -94,8 +94,8 @@
 </template>
 
 <script>
-import { Tel } from "~/config/env.js";
-import { getUserInfo } from "~/api/getData.js";
+// import { Tel } from "~/config/env.js";
+import { getUserInfo,getSortList } from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -104,6 +104,18 @@ export default {
   async fetch() {},
   async asyncData({ query, store ,redirect}) {
     let ayData = {};
+    await getSortList({
+      Data:{
+        ItemParentID:55
+      }
+    })
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.tel = res.data.Data[0].remark
+        }else{
+          console.log(res.data.Data)
+        }
+      })
     // console.log(store.state)
     await getUserInfo({
       Data: {
@@ -128,11 +140,11 @@ export default {
       this.$dialog
           .confirm({
             title: "提醒",
-            message: `还利息请联系客服！${Tel}`
+            message: `还利息请联系客服！${this.tel}`
           })
           .then(() => {
             //点击回调
-            location.href=`tel:${Tel}`
+            location.href=`tel:${this.tel}`
           })
           .catch(()=>{
 

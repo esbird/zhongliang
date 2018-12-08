@@ -40,7 +40,7 @@
               </p>
               <p>
                 <span class="money">{{'本金:'+item.FMoney+'  利息:'+item.lixi}}</span>
-                <span class="state">{{item.status?'待还款':'已还款'}}</span>
+                <span class="state">{{item.status?'已还款':'待还款'}}</span>
               </p>
             </li>
           </template>

@@ -199,12 +199,11 @@ P = 37.5
 .content
   // background #f2f2f2
   background url('~/static/register-bg.png') no-repeat top center / cover
-  min-height 'calc(100vh - %s)' % (40 / P)rem)
-  // padding-top: (10/P)rem
+  min-height 'calc(100vh - %s)' % (40 / P)rem
   overflow auto
   .regs-wrap
     width (350 / 37.5)rem
-    padding (28 / 37.5)rem, (25 / 37.5)rem, (21 / 37.5)rem
+    padding (28 / 37.5)rem (25 / 37.5)rem (21 / 37.5)rem
     background rgba(255, 255, 255, 0.95)
     border-radius (7.5 / P)rem
     // margin:  auto

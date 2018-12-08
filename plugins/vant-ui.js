@@ -14,6 +14,7 @@ import {
   Loading ,
   Radio,
   Swipe,
+  Tag,
   Tab,
   Tabs,
   SwipeItem,
@@ -41,6 +42,7 @@ Vue
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(Icon)
+  .use(Tag)
   .use(Rate)
   .use(Step)
   .use(Steps)

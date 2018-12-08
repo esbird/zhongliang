@@ -12,7 +12,14 @@
             class="time"
           >结束时间:&nbsp;&nbsp;{{item.FOrderNumber | endTime(item.FDays) | dateFormat('YYYY-MM-DD')}}</p>
         </template>
-        <span style="color:#003366">剩余{{item.FOrderNumber | leftDays(item.FDays)}}天</span>
+        <!-- <div class="right-wrap"> -->
+          <!-- <span class="status">审核中</span><br> -->
+          <template v-if="!item.TotalPay">
+            
+            <van-tag  style="background:#1989FA;color:#fff">{{item.IsChecked | statusComputed(item.IsPay,item.TotalPay)}}</van-tag><br>
+          </template>
+          <span style="color:#003366">剩余{{item.FOrderNumber | leftDays(item.FDays)}}天</span>
+        <!-- </div> -->
       </van-cell>
       <div class="btn-wrap">
         <nuxt-link tag="button" :to="{path:'/myself/kucun/kucunDetail',query:{UserID,UserGoodsID:item.UserGoodsID}}">查看详情</nuxt-link>
@@ -49,6 +56,22 @@ import storage from "~/api/storage.js";
 
 export default {
   async fetch() {},
+  filters:{
+    statusComputed(IsChecked,IsPay,TotalPay){
+      if (!IsChecked) {
+        return '审核中'
+      }
+      if (!IsPay) {
+        return '代付押金'
+      
+      }
+      if (!TotalPay) {
+        return '代付租金'
+      }else{
+        return ''
+      }
+    }
+  },
   async asyncData({ query, store }) {
     let ayData = {
       UserID: query.UserID
@@ -56,8 +79,6 @@ export default {
     await getZuLin({
       Data: {
         UserID: query.UserID,
-        IsChecked: 1,
-        IsPay: 1
       }
     }).then(res => {
       if (res.data.StatusCode == 200) {
@@ -130,6 +151,11 @@ export default {
 .factory-wrap
   display flex
   align-items center
+  
+  .status
+    padding 4px 8px
+    border 1px solid #003366
+    border-radius 3px
   p
     line-height 1.5
     &.time
@@ -140,6 +166,8 @@ export default {
   background #EEEDF2
   min-height 100vh
   // padding-top 15px
+  
+
   .van-cell-group
     margin-top 15px
 .base-fun-wrap

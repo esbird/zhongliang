@@ -73,6 +73,15 @@ export default {
         this.$alert('金额必须是10的倍数！')
         return ;
       }
+      if (this.postData.FMoney/this.daikuanInfo.FMoney < 0.8) {
+        this.$alert('金额必须大于等于借款金额的80%！')
+        return ;
+      }
+
+      if (this.userInfo.UserMouey<this.postData.FMoney) {
+        this.$alert('资金不够请先,转入资金！')
+        return ;
+      }
       if (!this.isArgee) {
         this.$alert('请先阅读，并同意借款协议！')
         return ;

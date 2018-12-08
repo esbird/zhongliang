@@ -1,7 +1,7 @@
 const Storage =  {}
 
 Storage.get = (name) =>{
-  console.log(localStorage.getItem(name))
+  // console.log(localStorage.getItem(name))
     return localStorage.getItem(name)
 }
 
