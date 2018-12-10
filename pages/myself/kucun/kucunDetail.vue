@@ -37,13 +37,13 @@
         <van-field v-model="postData.val" label="所需天数" input-align="right" placeholder="请输入所需天数"/> -->
 
         <!-- <h2 class="van-doc-demo-block__title">联系方式</h2> -->
-        <van-field v-model="dataInfo.FName" label="提交人" readonly input-align="right" placeholder="请输入提交人"/>
+        <van-field v-model="dataInfo.FName" label="提交人" readonly input-align="right" placeholder="请输入联系人姓名"/>
         <van-field v-model="dataInfo.UserPhone" label="联系方式" readonly input-align="right" placeholder="请输入联系方式"/>
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
       <van-cell-group>
-        <van-cell title="所需押金" :value="computPrice" />
-        <van-cell title="预计租金" :value="computPrice/2" />
+        <van-cell title="所需押金" :value="computPrice/2" />
+        <van-cell title="预计租金" :value="computPrice" />
       </van-cell-group>
       <ul class="base-fun-wrap">
         <nuxt-link tag="li" :to="{path:'/myself/kucun/putIn/add',query:{UserID:$route.query.UserID,UserGoodsID:$route.query.UserGoodsID}}">

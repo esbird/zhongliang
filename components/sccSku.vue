@@ -174,6 +174,8 @@ export default {
       this.returnData.xinghaoType = this.baseData.typeArr[this.selectedArr[2]].ID;
       this.$emit("submit", this.returnData);
       this.$emit("change", false);
+      this.selectedArr = [null,null,null,null];
+      this.count = 1;
     },
     onCancel(){
       this.showType=false;

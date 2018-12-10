@@ -97,13 +97,13 @@ export default {
         case 0:
           this.$router.push({
             path: "/renzheng",
-            query: { UserID: this.$route.query.UserID, type: 2 }
+            query: { UserID: this.$route.query.UserID, type: 3 }
           });
           break;
         case 1:
           this.$router.push({
             path: "/renzheng",
-            query: { UserID: this.$route.query.UserID, type: 2 }
+            query: { UserID: this.$route.query.UserID, type: 3 }
           });
           break;
         case 2:
@@ -125,13 +125,13 @@ export default {
         case 0:
           this.$router.push({
             path: "/renzheng",
-            query: { UserID: this.$route.query.UserID, type: 3 }
+            query: { UserID: this.$route.query.UserID, type: 2 }
           });
           break;
         case 1:
           this.$router.push({
             path: "/renzheng",
-            query: { UserID: this.$route.query.UserID, type: 3 }
+            query: { UserID: this.$route.query.UserID, type: 2 }
           });
           break;
         case 2:

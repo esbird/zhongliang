@@ -66,8 +66,8 @@
       </van-cell-group>
       <!-- <h2 class="van-doc-demo-block__title">所需租金</h2> -->
       <van-cell-group>
-        <van-cell title="所需押金" :value="computPrice" />
-        <van-cell title="预计租金" :value="computPrice/2" />
+        <van-cell title="所需押金" :value="computPrice/2" />
+        <van-cell title="预计租金" :value="computPrice" />
       </van-cell-group>
       <van-button size="large" style class="submit" @click="submit">提交订单</van-button>
     </div>
@@ -93,17 +93,17 @@ export default {
       selectedIndex:0,
       EntryData:[],
       postData: {
-        UserID: 0,  
-        PicID: 0,  //
+        UserID: '',  
+        PicID: '',  //
         pingfang: '',  //  平方
-        pingfangIndex:0,
-        Price: 0,  
+        pingfangIndex:'',
+        Price: '',  
         FDays: '',   //所需天数
-        FDaysIndex: 0,   //
-        FName: 0,  //  联系人
+        FDaysIndex: '',   //
+        FName: '',  //  联系人
         UserPhone: '', // 电话
-        remark: 0, // 
-        FOrderNumber: 0,  //订单编号  时间戳
+        remark: '', // 
+        FOrderNumber: '',  //订单编号  时间戳
       },
       show1:false,
       show2:false,

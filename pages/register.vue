@@ -29,7 +29,7 @@
           <label for="xieyi">用户协议</label>
         </div>
         <!-- <button  >注册</button> -->
-        <van-button size="large" class="submit" :disabled="!agree" @click="submit">登录</van-button>
+        <van-button size="large" class="submit" :disabled="!(agree && userInfo.subscribe)" @click="submit">登录</van-button>
       </div>
     </div>
     <van-number-keyboard
@@ -156,6 +156,9 @@ export default {
   },
   mounted() {
     storage.set("openid", this.$route.query.openid);
+    if (!this.userInfo.subscribe) {
+      this.$alert('请先关注公众号');
+    }
   },
   async asyncData({ query }) {
     let ayData = {
@@ -173,9 +176,12 @@ export default {
 
       if (res.data.StatusCode == 200) {
         let userInfo = JSON.parse(res.data.Data);
+        console.log('getWxUserInfo',userInfo);
 
         ayData.postData.WechatPic = userInfo.headimgurl;
         ayData.postData.WechatName = userInfo.nickname;
+        // 判断是否关注
+        ayData.postData.subscribe = userInfo.subscribe;
       }
     });
     return ayData;

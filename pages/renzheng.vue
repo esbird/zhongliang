@@ -2,13 +2,14 @@
   <div class="content">
     <header>{{computedHeader}}</header>
     <van-cell-group>
-      <van-field :label="$route.query.type=='1'?'货物来源':'资金来源：'"  v-model="postData.FSourceName"  @click="show=true" readonly placeholder="请选择" is-link/>
+      <van-field :label="computedUsage"  v-model="postData.FSourceName"  @click="show=true" readonly placeholder="请选择" is-link/>
       <van-popup v-model="show" position="bottom">
         <van-picker :columns="dicArr" value-key="ItemName" show-toolbar @cancel="onCancel" @confirm="onConfirm" />
       </van-popup>
 
 
-      <van-field label="银行卡号：" v-model="postData.BankCard" placeholder="请输入银行卡账号"/>
+      <van-field label="银行卡号：" v-model="postData.BankCard" :disabled="hasBankCard" placeholder="请输入银行卡账号"/>
+      <van-field label="开户行：" v-model="postData.kaihuhang" :disabled="hasBankCard" placeholder="请输入银行卡开户行"/>
       <van-field label="您的姓名：" v-model="postData.FName" placeholder="银行登记姓名"/>
       <!-- <van-field label="手机号码：" v-model="postData.FMoneySource"  placeholder="请输入手机号码"/> -->
       <van-field v-model="postData.FPhone" center readonly label="手机号码：" placeholder="请输入手机号码">
@@ -63,6 +64,23 @@ export default {
 
           break;
       }
+    },
+    computedUsage(){
+          switch (parseInt(this.$route.query.type) ) {
+            case 1:
+              return "货物来源";
+              break;
+            case 2:
+              return "资金来源：";
+              break;
+            case 3:
+              return "资金用途：";
+              break;
+            default:
+    
+              break;
+          }
+
     }
   },
   data() {
@@ -125,6 +143,9 @@ export default {
     });
     ayData.postData.FPhone = ayData.userInfo.UserPhone;
     ayData.postData.UserID = ayData.userInfo.UserID;
+    ayData.postData.BankCard = ayData.userInfo.BankCard;
+    ayData.postData.kaihuhang = ayData.userInfo.kaihuhang;
+    ayData.hasBankCard = ayData.userInfo.BankCard?true:false;
     ayData.postData.UpLevel = query.type;
     ayData.postData.FType = query.type;
     return ayData;
@@ -146,7 +167,8 @@ export default {
         this.postData.BankCard &&
         this.postData.FName &&
         this.postData.FPhone &&
-        this.postData.FSource
+        this.postData.FSource &&
+        this.postData.kaihuhang
       ) {
       } else {
         this.$alert("请完善信息！");
