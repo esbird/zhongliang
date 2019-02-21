@@ -6,10 +6,18 @@
       <h2>￥
         <input type="number" class="count" v-model.number="money">
       </h2>
+      <p style="color:#868686">
+        请转入到指定账号
+        <span style="color:#003366">{{companyBankInfo[2].remark}}({{companyBankInfo[0].remark}})</span>
+      </p>
       <button class="btn" @click="submit">提交审核</button>
     </div>
     <!-- 转出 -->
     <div class="out" v-if="$route.params.type==1">
+      <p style="color:#868686;margin-bottom:10px">
+        银行卡
+        <span style="color:#003366">{{userInfo.BankCard}}({{userInfo.kaihuhang}})</span>
+      </p>
       <p>提现金额</p>
       <h2>￥
         <input type="number" class="count" v-model.number="money">
@@ -35,7 +43,7 @@
 </template>
 
 <script>
-import { getUserInfo ,getMoneyRecord, postUserMoney} from "~/api/getData.js";
+import { getUserInfo ,getMoneyRecord, postUserMoney,getSortList} from "~/api/getData.js";
 import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -49,6 +57,16 @@ export default {
     switch(parseInt(params.type)){
       // 转入
       case 0:
+        await getSortList({
+          Data:{
+            ItemParentID:60
+          }
+        })
+          .then(res=>{
+            if (res.data.StatusCode==200) {
+              ayData.companyBankInfo = res.data.Data;
+            }
+          })
         break;
       // 转出
       case 1:

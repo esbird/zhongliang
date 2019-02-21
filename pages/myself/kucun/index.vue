@@ -15,18 +15,22 @@
         <!-- <div class="right-wrap"> -->
           <!-- <span class="status">审核中</span><br> -->
           <template v-if="!item.TotalPay">
-            
             <van-tag  style="background:#1989FA;color:#fff">{{item.IsChecked | statusComputed(item.IsPay,item.TotalPay)}}</van-tag><br>
           </template>
           <span style="color:#003366">剩余{{item.FOrderNumber | leftDays(item.FDays)}}天</span>
         <!-- </div> -->
       </van-cell>
       <div class="btn-wrap">
-        <nuxt-link tag="button" :to="{path:'/myself/kucun/kucunDetail',query:{UserID,UserGoodsID:item.UserGoodsID}}">查看详情</nuxt-link>
-        <button
+        <nuxt-link tag="button" 
+        :to="{path:'/myself/kucun/kucunDetail',query:{UserID,UserGoodsID:item.UserGoodsID}}">
+          查看详情
+        </nuxt-link>
+        <van-button
+          type="default"
           @click="goDebt(item.UserGoodsID)"
           style="background:#fff;color:#000"
-        >抵押贷款</button>
+          :disabled="item.TotalPay?false:true"
+        >抵押贷款</van-button>
       </div>
     </van-cell-group>
     <ul class="base-fun-wrap">
@@ -55,7 +59,7 @@ import storage from "~/api/storage.js";
 // import axios from "axios";
 
 export default {
-  async fetch() {},
+  // async fetch(){},
   filters:{
     statusComputed(IsChecked,IsPay,TotalPay){
       if (!IsChecked) {
@@ -97,10 +101,11 @@ export default {
         // 仓储用户
           this.$dialog.confirm({
             title:'提醒',
-            message:'申请贷款后，将不能成为出借人！'
+            message:'请先申请会员升级'
           })
             .then(()=>{
-              this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
+
+              this.$router.push({path:'/renzheng',query:{UserID:this.$route.query.UserID}})
             })
             .catch(()=>{
 
@@ -112,7 +117,7 @@ export default {
           break;
         case 3:
           // 贷款用户
-           this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID}})
+           this.$router.push({path:'/myself/daikuan/shenqingdaikuan',query:{UserID:this.$route.query.UserID,UserGoodsID}})
 
       }
       // if (this.userInfo.UserType) {
@@ -166,8 +171,6 @@ export default {
   background #EEEDF2
   min-height 100vh
   // padding-top 15px
-  
-
   .van-cell-group
     margin-top 15px
 .base-fun-wrap

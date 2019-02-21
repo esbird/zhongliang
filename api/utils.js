@@ -1,10 +1,9 @@
 // axios = require("axios");
 const axios = require("axios");
-let partten = /^1[34578]\d{9}$/;
 let body = {
   // 校验手机号
   phoneTest(val) {
-    return partten.test(val);
+    return /^1[34578]\d{9}$/.test(val);
   },
   // 检验身份证
   idCardTest(val) {

@@ -60,7 +60,7 @@
         </li>
       </ul>
       <wu-view v-else/>
-      <van-button size="large" style class="submit" @click="goEdit">申请贷款</van-button>
+      <!-- <van-button size="large" style class="submit" @click="goEdit">申请贷款</van-button> -->
     </div>
   </div>
 </template>
@@ -161,7 +161,7 @@ export default {
 .content
   background #f2f2f2
 .fang-wrap
-  height 'calc(100vh - %s)' % 84px
+  height 'calc(100vh - %s)' % 40px
   overflow auto
   // padding 11px 0 0
   li

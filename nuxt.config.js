@@ -75,7 +75,7 @@ module.exports = {
     ],
     postcss: [
       require('postcss-px2rem')({
-        remUnit: 37.5
+        remUnit: 35
       }),
     ],
     vendor: ['vant'],

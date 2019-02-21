@@ -29,6 +29,13 @@ export const getDicParent = (data,headers={}) => fetch('/api/Get/DicParent',data
 export const getGuaPai = (data,headers={}) => fetch('/api/Get/guapai',data, "POST",headers);
 
 /**
+ * 获取首页三条挂牌信息
+
+ */
+
+export const getGuaPaiNew = (data,headers={}) => fetch('/api/Get/guapaiNew',data, "POST",headers);
+
+/**
  * 	获取挂牌信息
 
  */

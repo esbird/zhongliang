@@ -21,7 +21,9 @@
       <h2 class="van-doc-demo-block__title">贷款人联系方式</h2>
       <van-field v-model.number="dataInfo.FPhone" type="number" placeholder="请输入方式"/>
       <h2 class="van-doc-demo-block__title">银行卡</h2>
-      <van-field v-model.number="dataInfo.BankCard" type="number" placeholder="请输入银行卡"/>
+      <van-field v-model.number="dataInfo.BankCard" disabled readonly type="number" placeholder="银行卡"/>
+      <h2 class="van-doc-demo-block__title">银行卡开户行</h2>
+      <van-field v-model="dataInfo.kaihuhang" disabled readonly type="text" placeholder="银行卡开户行"/>
       <div class="xieyi">
         <input type="checkbox" name id="xieyi" v-model="xieyi">
         <label for="xieyi">贷款协议</label>
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-import { getUserInfo, postDaikuan } from "~/api/getData.js";
+import { getUserInfo, postDaikuan,getZuLinDt } from "~/api/getData.js";
 import { checkBankno, phoneTest } from "~/api/utils.js";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
@@ -134,13 +136,7 @@ export default {
     return {
       xieyi: false,
       // userinfo:{},
-      dataInfo: {
-        UserID: "",
-        FMoney: "",
-        BankCard: "",
-        FPhone: "",
-        FDays: ""
-      }
+      
     };
   },
   head: {
@@ -152,7 +148,16 @@ export default {
     this.dataInfo.UserID = this.userInfo.UserID;
   },
   async asyncData({ query }) {
-    let ayData = {};
+    let ayData = {
+      dataInfo: {
+        UserID: "",
+        FMoney: "",
+        BankCard: "",
+        FPhone: "",
+        FDays: "",
+        UserGoodsID:query.UserGoodsID
+      }
+    };
     await getUserInfo({
       Data: {
         UserID: query.UserID
@@ -164,6 +169,21 @@ export default {
         console.error("getUserInfo", res.data.Data);
       }
     });
+    await getZuLinDt({
+      Data: {
+        UserGoodsID: query.UserGoodsID
+      }
+    }).then(res => {
+      if (res.data.StatusCode == 200) {
+        ayData.zuPingInfo = res.data.Data;
+      } else {
+        console.error("getZuLinDt", res.data.Data);
+      }
+    });
+    ayData.userInfo.FMoney = parseInt(ayData.zuPingInfo.DMoney)
+    // console.log(ayData.zuPingInfo);
+    ayData.dataInfo.BankCard = ayData.userInfo.BankCard;
+    ayData.dataInfo.kaihuhang = ayData.userInfo.kaihuhang;
     return ayData;
   }
 };
@@ -223,7 +243,9 @@ export default {
   font-size 20px
 .content
   background #f2f2f2
-  min-height 'calc(100vh - %s)' % 84px
+  height 'calc(100vh - %s)' % 84px
+  padding-bottom 15px
+  overflow auto
 .section1
   width 100%
   height 150px

@@ -25,7 +25,7 @@
           <div class="img-wrap">
             <i class="iconfont icon-daikuan1"></i>
           </div>
-          <span>放贷</span>
+          <span>放款</span>
         </li>
       </ul>
       <div class="cont">
@@ -43,7 +43,19 @@
             </ul>
           </div>
         </div>-->
-        <div class="guapai-block"></div>
+        <div class="guapai-block">
+          <h2><span>货物推荐</span><nuxt-link tag="span" :to="{path:'/myself/wodeguapai',query:{UserID:$route.query.UserID}}">我要挂牌<van-icon name="arrow" color="#003366" /></nuxt-link></h2>
+          <ul>
+            <li v-for="(item,index) in lastGuaPai" :key="index" @click="goDetail(item.FInterID)">
+              <img :src="item.WebSite" alt="">
+              <div class="right-port">
+                <p style="font-weight:bold;">{{item.FName}}</p>
+                <p class="num">数量：{{item.FNumber}}{{item.FUnit}}</p>
+                <p class="price">￥<span>{{item.price}}</span></p>
+              </div>
+            </li>
+          </ul>
+        </div>
         <div class="desc-block">
           <h2>公司简介</h2>
           <p>中良科技集团有限公司是中国人民解放军总装部指北针唯一列装生产厂。</p>
@@ -64,7 +76,7 @@
   </div>
 </template>
 <script>
-import { getSortList, getGuaPai, getUserInfo, getPic } from "~/api/getData.js";
+import { getSortList, getGuaPai, getUserInfo, getPic,getGuaPaiNew } from "~/api/getData.js";
 // import storage from "~/api/storage.js";
 // import wxPay from "~/api/wxpay.js";
 // import axios from "axios";
@@ -91,6 +103,9 @@ export default {
     };
   },
   methods: {
+    goDetail(FInterID){
+      this.$router.push({ path: "/goodsDetail", query: { FInterID } });
+    },
     //跳贷款
     goDaiKuan() {
       switch (this.userInfo.UserType) {
@@ -111,7 +126,7 @@ export default {
           break;
         case 3:
           this.$router.push({
-            path: "/myself/wodefankuan",
+            path: "/myself/daikuan",
             query: { UserID: this.$route.query.UserID }
           });
           break;
@@ -136,7 +151,7 @@ export default {
           break;
         case 2:
           this.$router.push({
-            path: "/myself/daikuan",
+            path: "/myself/wodefankuan",
             query: { UserID: this.$route.query.UserID }
           });
           break;
@@ -185,6 +200,7 @@ export default {
   },
   async asyncData({ query }) {
     let ayData = {};
+    // 获取个人信息
     await getUserInfo({
       Data: {
         UserID: query.UserID
@@ -208,6 +224,17 @@ export default {
         console.error(res.data.Data);
       }
     });
+    // 获取推荐挂牌
+    await getGuaPaiNew({
+      Data:{}
+    })
+      .then(res=>{
+        if (res.data.StatusCode==200) {
+          ayData.lastGuaPai = res.data.Data;
+        }else{
+          
+        }
+      })
 
     return ayData;
   }

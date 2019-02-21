@@ -11,8 +11,11 @@
         </van-cell>
         <!-- <van-field v-model="postData.val" type="number" label="产品数量" input-align="right" placeholder="请输入产品数量"/> -->
       </van-cell-group>
-      <!-- <h2 class="van-doc-demo-block__title">产品种类</h2> -->
-      <van-cell-group>
+      <h2 class="van-doc-demo-block__title">库存详情</h2>
+      <van-cell-group style="text-align:center" v-if="parseInt(dataInfo.FType) == 67">
+        <textarea name="" id="" v-model="dataInfo.remark" readonly class="remark" placeholder="请填写产品说明"></textarea>
+      </van-cell-group>
+      <van-cell-group v-else>
         <table border="1" width="100%" frame="void">
           <tbody>
             <tr>
@@ -31,6 +34,8 @@
           </tbody>
         </table>
       </van-cell-group>
+      
+
       <van-cell-group>
         <!-- <h2 class="van-doc-demo-block__title">所需平方</h2> -->
         <!-- <van-field v-model="postData.val" label="所需平方" input-align="right" placeholder="请输入所需平方"/>
@@ -45,7 +50,7 @@
         <van-cell title="所需押金" :value="computPrice/2" />
         <van-cell title="预计租金" :value="computPrice" />
       </van-cell-group>
-      <ul class="base-fun-wrap">
+      <ul class="base-fun-wrap"  v-if="parseInt(dataInfo.FType) != 67">
         <nuxt-link tag="li" :to="{path:'/myself/kucun/putIn/add',query:{UserID:$route.query.UserID,UserGoodsID:$route.query.UserGoodsID}}">
           <i class="iconfont icon-zhuanru" style="color:#8A8A8A"></i>
           <span>入库</span>
@@ -126,6 +131,14 @@ export default {
 };
 </script>
 <style lang='stylus' scoped>
+.remark
+  width 360px
+  height 300px
+  border-radius 5px
+  padding 8px
+  font-size 18px
+  margin 8px auto
+  color #333333
 table
   tr
     td
@@ -147,7 +160,7 @@ table
       &:last-child
         width 300px
 .van-cell-group
-  margin-top 10px
+  margin 5px 0
 .desc
   width 350px
   height 110px

@@ -1,140 +1,181 @@
 .content
-    background: #fff
-    padding-bottom: 50px;
+  background: #fff
+  padding-bottom: 50px
 .img-wrap
-    width: 100%
-    height 200px
-    text-align center
-    background-color: #D7D7D7
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain
-    overflow hidden
+  width: 100%
+  height: 200px
+  text-align: center
+  background-color: #D7D7D7
+  background-position: center
+  background-repeat: no-repeat
+  background-size: contain
+  overflow: hidden
 .pic
-    height 200px
-    width auto
-    margin 0 auto
+  height: 200px
+  width: auto
+  margin: 0 auto
 .sort-bar
   width: 100%
-  height 40px
+  height: 40px
   font-size: 14px
   line-height: 40px
   border-bottom: 1.2px solid #f2f2f2
-  span  
+  span
     margin-left: 28px
+.search-history
+  p
+    font-size: 12px
+    height 40px
+    // display: flex
+    // align-items: center
+    line-height: 40px
+    padding 5px
+    span
+      margin-left: 6px
+    .delete
+      float right
+  & > span
+    font-size: 12px
+    color: #797979
+    display: inline-block
+    padding: 4px 6px
+    border-radius: 5px
+    background #EEEDF2
+    margin: 5px
 .goods-wrap
-  height 'calc(100vh - %s)' % 94px
+  height: 'calc(100vh - %s)' % 94px
   width: 100%
-  display flex
+  display: flex
   .port-left
-    height 100%;
+    height: 100%
     width: 90px
-    background #F2F2F2
-    overflow auto
-    padding 5px 0
-    border 1.2px solid #E3E3E4
-    ul
-      li
+    background: #F2F2F2
+    overflow: auto
+    padding: 5px 0
+    border: 1.2px solid #E3E3E4
+    ul.lv1
+      &>li
         line-height: 35px
         font-size: 15px
         text-align: center
+        background #003366
+        color #fff
         ul
+          li
+            background #EDEDF2
+            color: #6B7093
           li.active-item
-            position relative
+            position: relative
             &:before
-              content: ""
+              content: ''
               width: 2.5px
-              height 16px
-              position absolute
-              left 0
+              height: 16px
+              position: absolute
+              left: 0
               top: 50%
-              transform: translate3d(-50%,-50%,0)
-              background #003366
+              transform: translate3d(-50%, -50%, 0)
+              background: #003366
             &:active
-              opacity .6
-        &.active
-          position relative
-          background #fff
+              opacity: 0.6
+        // &.active
+        //   position: relative
+        //   background: #fff
   .port-right
-    flex:1
-    height 100%
-    overflow auto
-    padding 5px
-    ul.sort-wrap
-      li
-        width: 100%
-        height 100px
-        border-radius: 7.5px
-        background #f2f2f2
+    flex: 1
+    height: 100%
+    overflow: auto
+    padding: 5px 5px 5px
+    position: relative
+    .sortNav2
+      width: 100%
+      padding: 0 5px
+      position: absolute
+      left: 0
+      top: 0
+      border-bottom: 1px solid #dcdcdc
+      ul
         display: flex
+        height: 30px
         align-items: center
-        padding 7.5px
-        &~li
-          margin-top: 2px
-        img 
-          width: 85px
-          height 85px
-          background fff
-          // margin-left: 7.5px
-        .text
-          display flex
-          flex-direction: column
-          margin-left: 9px
-          height 100%
-          h2
-            font-size: 16px
-          .weight
-            font-size: 12px
-            margin-top: 28px
-            color: #949494
-          .price
-            font-size: 10px
-            color: #003366
-            margin-top: 3px
-            span 
-              font-size: 18px
-    .daikuan-wrap
-      padding 5px
-      li
-        width: 100%
-        height 100px
-        background #F9F9F8
-        border-radius: 5px
-        padding 5px
-        position relative
-        &~li
-          margin-top: 10px
-        h2
-          font-size: 16px
-          text-indent: 4px
-        p
-          font-size: 12px
-        .star
-          display:flex;
-          align-items:center
-          margin: 2px 0 15px
-
-        .money
-          color #003366
-          font-size: 10px
-          margin: 7px 0 0 
-          span 
-            font-size: 15px
-        .extend
-          position: absolute
-          bottom 3px
-          right 10px
-          text-align: right
-          .lixi
-            font-size: 18px
-            color #CC3300
-          .fDay
-            font-size: 12px
-            color: #B59494
-            margin-top: 4px
-
-          
-
-
-
-
+        li
+          // line-height: 30px
+          padding: 5px 5px
+          margin: 0 5px
+          display: block
+          &.active-item
+            background: #003380
+            color: #fff
+            border-radius: 3px
+ul.sort-wrap
+  padding: 4px
+  margin-top: 30px
+  li
+    width: 100%
+    height: 100px
+    border-radius: 7.5px
+    background: #f2f2f2
+    display: flex
+    align-items: center
+    padding: 7.5px
+    &~li
+      margin-top: 2px
+    img
+      width: 85px
+      height: 85px
+      background: fff
+      // margin-left: 7.5px
+    .text
+      display: flex
+      flex-direction: column
+      margin-left: 9px
+      height: 100%
+      h2
+        font-size: 16px
+      .weight
+        font-size: 12px
+        margin-top: 28px
+        color: #949494
+      .price
+        font-size: 10px
+        color: #003366
+        margin-top: 3px
+        span
+          font-size: 18px
+.daikuan-wrap
+  padding: 5px
+  li
+    width: 100%
+    height: 100px
+    background: #F9F9F8
+    border-radius: 5px
+    padding: 5px
+    position: relative
+    &~li
+      margin-top: 10px
+    h2
+      font-size: 16px
+      text-indent: 4px
+    p
+      font-size: 12px
+    .star
+      display: flex
+      align-items: center
+      margin: 2px 0 15px
+    .money
+      color: #003366
+      font-size: 10px
+      margin: 7px 0 0
+      span
+        font-size: 15px
+    .extend
+      position: absolute
+      bottom: 3px
+      right: 10px
+      text-align: right
+      .lixi
+        font-size: 18px
+        color: #CC3300
+      .fDay
+        font-size: 12px
+        color: #B59494
+        margin-top: 4px
