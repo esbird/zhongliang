@@ -1,7 +1,7 @@
 <<<<<<< HEAD
-# ww_nuxt
+# zhongliang项目
 
-> Nuxt.js project
+> 中良创投
 
 ## Build Setup
 
